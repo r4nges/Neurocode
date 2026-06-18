@@ -4,9 +4,12 @@
 - Node.js 18+ (recomendado 20 LTS) e npm.
 
 ## Setup (uma vez)
+Rode os comandos **um por linha** (funciona em bash, CMD e PowerShell — sem depender de `&&`):
 ```bash
 npm run setup
-cd server && npx prisma migrate dev --name init && cd ..
+cd server
+npx prisma migrate dev --name init
+cd ..
 ```
 
 ## Rodar em desenvolvimento
