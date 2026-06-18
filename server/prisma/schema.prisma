@@ -19,4 +19,13 @@ model User {
   streak         Int       @default(0)
   lastActiveDate DateTime?
   createdAt      DateTime  @default(now())
+  sessions       Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
