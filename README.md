@@ -1,5 +1,8 @@
 # NeuroCode · Site EAD de Educação em Programação
 
+> 🚧 **Protótipo da plataforma (Node + React):** veja [GETTING-STARTED.md](GETTING-STARTED.md).
+> O conteúdo abaixo descreve a landing legada (Flask), mantida como referência de design.
+
 Landing page **high-fidelity, moderna e responsiva** para a NeuroCode — plataforma EAD
 gamificada de ensino de programação. Construída a partir da documentação do protótipo
 (`conversa-neurocode.md`), reusando a identidade visual (logo recriada em SVG, paleta
