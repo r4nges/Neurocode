@@ -1,0 +1,22 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String
+  email          String    @unique
+  passwordHash   String
+  plan           String    @default("free")
+  xp             Int       @default(0)
+  level          Int       @default(1)
+  neuroPoints    Int       @default(0)
+  streak         Int       @default(0)
+  lastActiveDate DateTime?
+  createdAt      DateTime  @default(now())
+}

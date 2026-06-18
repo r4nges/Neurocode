@@ -11,9 +11,12 @@
     "migrate": "prisma migrate dev"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "dotenv": "^17.4.2",
     "express": "^4.19.2"
   },
   "devDependencies": {
+    "prisma": "^5.22.0",
     "supertest": "^7.0.0",
     "vitest": "^2.1.0"
   }
