@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import healthRouter from './routes/health.js';
+import authRouter from './routes/auth.js';
 import { issueCsrfToken } from './middleware/csrf.js';
 import { notFound, errorHandler } from './middleware/error.js';
 
@@ -29,6 +30,7 @@ app.get('/api/csrf', (req, res) => {
 });
 
 app.use('/api', healthRouter);
+app.use('/api/auth', authRouter);
 
 app.use(notFound);
 app.use(errorHandler);
