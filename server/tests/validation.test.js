@@ -29,6 +29,16 @@ describe('registerSchema', () => {
     });
     expect(r.success).toBe(false);
   });
+
+  it('rejeita senha fraca (sem maiúscula)', () => {
+    const r = registerSchema.safeParse({ name: 'Rangel', email: 'r@n.dev', password: 'sup3rsecret' });
+    expect(r.success).toBe(false);
+  });
+
+  it('rejeita senha fraca (sem minúscula)', () => {
+    const r = registerSchema.safeParse({ name: 'Rangel', email: 'r@n.dev', password: 'SUP3RSECRET' });
+    expect(r.success).toBe(false);
+  });
 });
 
 describe('loginSchema', () => {
@@ -40,5 +50,11 @@ describe('loginSchema', () => {
   it('rejeita e-mail ausente', () => {
     const r = loginSchema.safeParse({ password: 'x' });
     expect(r.success).toBe(false);
+  });
+
+  it('normaliza o e-mail para minúsculas', () => {
+    const r = loginSchema.safeParse({ email: 'USER@EXAMPLE.COM', password: 'x' });
+    expect(r.success).toBe(true);
+    expect(r.data.email).toBe('user@example.com');
   });
 });
