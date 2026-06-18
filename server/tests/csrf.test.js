@@ -21,6 +21,7 @@ describe('CSRF double-submit', () => {
     expect(res.status).toBe(200);
     expect(res.body.csrfToken).toMatch(/^[a-f0-9]{64}$/);
     expect(res.headers['set-cookie'].join(';')).toContain('nc_csrf=');
+    expect(res.headers['set-cookie'].join(';')).not.toContain('HttpOnly');
   });
 
   it('bloqueia POST sem o header X-CSRF-Token (403)', async () => {
