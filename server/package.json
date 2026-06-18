@@ -15,11 +15,13 @@
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
+    "argon2": "^0.44.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^4.19.2",
-    "helmet": "^8.2.0"
+    "helmet": "^8.2.0",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "prisma": "^5.22.0",
