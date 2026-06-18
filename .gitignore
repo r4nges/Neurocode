@@ -1,0 +1,35 @@
+# ---- Segredos / ambiente ----
+.env
+.env.*
+!.env.example
+
+# ---- Dados gerados em runtime (contém e-mails / PII) ----
+data/inscricoes.json
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# ---- Node / front-end (futuro) ----
+node_modules/
+dist/
+build/
+.vite/
+*.log
+npm-debug.log*
+
+# ---- Banco de dados local (futuro) ----
+*.sqlite
+*.sqlite3
+*.db
+dev.db
+
+# ---- Config local do editor / Claude ----
+.claude/settings.local.json
+
+# ---- SO ----
+.DS_Store
+Thumbs.db

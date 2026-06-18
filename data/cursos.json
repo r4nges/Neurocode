@@ -1,0 +1,10 @@
+{
+  "cursos": [
+    { "id": "web", "lang": "web", "title": "Desenvolvimento Web", "desc": "HTML, CSS e JavaScript do zero até publicar seu primeiro site responsivo.", "level": "iniciante", "badge": ["Recomendado", "is-pink"], "hours": 38, "lessons": 64, "color": "#FF6B30" },
+    { "id": "python", "lang": "python", "title": "Python Completo", "desc": "Lógica, variáveis, estruturas de dados e automação com a linguagem mais querida.", "level": "iniciante", "badge": ["Popular", "is-gold"], "hours": 52, "lessons": 88, "color": "#FFD700" },
+    { "id": "js", "lang": "javascript", "title": "JavaScript Moderno", "desc": "ES6+, DOM, assíncrono e APIs para dar vida e interação às suas páginas.", "level": "intermediario", "badge": ["Front-end", "is-cyan"], "hours": 44, "lessons": 72, "color": "#00CFFF" },
+    { "id": "php", "lang": "php", "title": "PHP & Back-end", "desc": "Servidores, formulários e banco de dados para construir sistemas completos.", "level": "intermediario", "badge": ["Back-end", "is-pink"], "hours": 36, "lessons": 58, "color": "#9B6BFF" },
+    { "id": "data", "lang": "data", "title": "Estrutura de Dados", "desc": "Pilhas, filas, árvores e grafos — a base que separa quem programa de quem resolve.", "level": "avancado", "badge": ["Fundamentos", "is-green"], "hours": 40, "lessons": 60, "color": "#00C896" },
+    { "id": "algo", "lang": "algo", "title": "Algoritmos Essenciais", "desc": "Ordenação, busca e complexidade para escrever código eficiente e elegante.", "level": "avancado", "badge": ["Lógica", "is-orange"], "hours": 34, "lessons": 50, "color": "#FF6B30" }
+  ]
+}

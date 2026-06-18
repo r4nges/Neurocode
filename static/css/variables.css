@@ -1,0 +1,93 @@
+/* ==========================================================================
+   NeuroCode · Design Tokens
+   Paleta e tokens extraídos da documentação do protótipo (conversa-neurocode.md)
+   ========================================================================== */
+
+:root {
+  /* ---- Marca / Gradientes ---- */
+  --grad-brand: linear-gradient(135deg, #6C5CE7 0%, #9B6BFF 100%);
+  --grad-brand-cyan: linear-gradient(135deg, #6C5CE7 0%, #9B6BFF 45%, #00CFFF 100%);
+  --grad-bg: linear-gradient(180deg, #080818 0%, #0F0A2E 40%, #1A0F45 70%, #1E1060 100%);
+  --grad-text: linear-gradient(120deg, #9B6BFF 0%, #00CFFF 100%);
+
+  /* ---- Cores base (tema escuro = padrão da marca) ---- */
+  --c-purple: #6C5CE7;
+  --c-purple-light: #9B6BFF;
+  --c-purple-accent: #A78BFA;
+
+  --c-bg-0: #080818;
+  --c-bg-1: #0F0A2E;
+  --c-bg-2: #1A0F45;
+
+  /* ---- Superfícies / Cards ---- */
+  --c-card: #1C1840;
+  --c-card-2: #1E1B3A;
+  --c-card-3: #242048;
+  --c-card-4: #3D3870;
+  --c-border: #2D2860;
+  --c-border-soft: rgba(167, 139, 250, 0.14);
+
+  /* ---- Texto ---- */
+  --c-text: #FFFFFF;
+  --c-text-muted: #8A8AAA;
+  --c-text-dim: #6E6E92;
+
+  /* ---- Cores de acento ---- */
+  --c-green: #00C896;
+  --c-gold: #FFD700;
+  --c-orange: #FF6B30;
+  --c-cyan: #00CFFF;
+  --c-cyan-2: #00D4FF;
+  --c-pink: #FF6B9D;
+  --c-red: #FF5050;
+  --c-red-soft: #FF6B6B;
+
+  /* ---- Glow / RGB para alpha ---- */
+  --rgb-purple: 108, 92, 231;
+  --rgb-cyan: 0, 207, 255;
+
+  /* ---- Tipografia ---- */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-hand: "Caveat", "Inter", cursive;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, "Cascadia Code", monospace;
+
+  /* ---- Espaçamento / raios / sombras ---- */
+  --radius-sm: 12px;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-pill: 50px;
+
+  --shadow-btn: 0 4px 20px rgba(var(--rgb-purple), 0.4);
+  --shadow-card: 0 18px 50px -24px rgba(0, 0, 0, 0.85);
+  --shadow-glow: 0 0 60px -10px rgba(var(--rgb-purple), 0.55);
+
+  --maxw: 1200px;
+  --header-h: 72px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Tema claro (toggle) — mantém a identidade roxo/ciano em fundo claro
+   ========================================================================== */
+:root[data-theme="light"] {
+  --grad-bg: linear-gradient(180deg, #F4F2FF 0%, #ECE9FF 45%, #E6EEFF 100%);
+  --grad-text: linear-gradient(120deg, #6C5CE7 0%, #0094c7 100%);
+
+  --c-bg-0: #F4F2FF;
+  --c-bg-1: #ECE9FF;
+  --c-bg-2: #E6EEFF;
+
+  --c-card: #FFFFFF;
+  --c-card-2: #FBFAFF;
+  --c-card-3: #F3F1FF;
+  --c-card-4: #ECE7FF;
+  --c-border: #E2DCF7;
+  --c-border-soft: rgba(108, 92, 231, 0.18);
+
+  --c-text: #14112B;
+  --c-text-muted: #5A5775;
+  --c-text-dim: #837fa0;
+
+  --shadow-card: 0 22px 50px -28px rgba(76, 60, 160, 0.45);
+  --shadow-glow: 0 0 60px -10px rgba(var(--rgb-purple), 0.28);
+}

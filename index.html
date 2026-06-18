@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroCode · Educação em Programação EAD — Seu cérebro, seu ritmo, seu código</title>
+  <meta name="description" content="NeuroCode é a plataforma EAD gamificada para aprender programação com aprendizado adaptativo, trilhas de Python, JavaScript e Web, mentoria humana e o assistente NeuroBot 24h." />
+  <meta name="theme-color" content="#0F0A2E" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="NeuroCode — Educação em Programação EAD" />
+  <meta property="og:description" content="Aprenda programação no seu ritmo, com gamificação, IA e mentoria. Seu cérebro, seu ritmo, seu código." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/svg+xml" href="static/img/logo.svg" />
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="static/css/variables.css" />
+  <link rel="stylesheet" href="static/css/base.css" />
+  <link rel="stylesheet" href="static/css/animations.css" />
+  <link rel="stylesheet" href="static/css/components.css" />
+  <link rel="stylesheet" href="static/css/sections.css" />
+</head>
+<body>
+  <div class="bg-canvas" aria-hidden="true"></div>
+
+  <!-- ===================================================== HEADER -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Navegação principal">
+      <a href="#topo" class="brand" aria-label="NeuroCode — início">
+        <span class="brand-mark"><img src="static/img/logo.svg" alt="" /></span>
+        <span><b>Neuro</b><span class="accent">Code</span></span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#cursos" data-spy>Trilhas</a></li>
+        <li><a href="#metodologia" data-spy>Metodologia</a></li>
+        <li><a href="#gamificacao" data-spy>Gamificação</a></li>
+        <li><a href="#neurobot" data-spy>NeuroBot</a></li>
+        <li><a href="#planos" data-spy>Planos</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="icon-btn theme-toggle" aria-label="Alternar tema claro/escuro" title="Alternar tema">
+          <i data-lucide="moon" class="i-moon"></i>
+          <i data-lucide="sun" class="i-sun"></i>
+        </button>
+        <a href="#planos" class="btn btn-ghost btn-sm btn-cta-desktop">Entrar</a>
+        <a href="#cta" class="btn btn-primary btn-sm">Comece grátis</a>
+        <button class="icon-btn nav-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <i data-lucide="menu"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- menu mobile -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#cursos">Trilhas</a>
+    <a href="#metodologia">Metodologia</a>
+    <a href="#gamificacao">Gamificação</a>
+    <a href="#neurobot">NeuroBot</a>
+    <a href="#planos">Planos</a>
+    <a href="#cta" class="btn btn-primary btn-block">Comece grátis</a>
+  </div>
+
+  <main id="topo">
+    <!-- ===================================================== HERO -->
+    <section class="hero">
+      <div class="hero-decor" aria-hidden="true">
+        <span style="top:14%;left:6%;font-size:2.2rem">&lt;/&gt;</span>
+        <span style="top:62%;left:3%;font-size:1.6rem">{ }</span>
+        <span style="top:28%;right:4%;font-size:1.8rem">( )</span>
+        <span style="top:78%;right:8%;font-size:2rem">=&gt;</span>
+        <span style="top:48%;left:48%;font-size:1.4rem">; ;</span>
+        <span style="top:8%;right:30%;font-size:1.3rem">[ ]</span>
+      </div>
+
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="hero-pill" data-reveal>
+            <span class="tag">EAD</span> Aprendizado adaptativo por perfil
+          </span>
+
+          <h1 data-reveal data-reveal-delay="1">
+            Seu cérebro,<br />seu ritmo,<br />
+            <span class="h-hand">seu código.</span>
+          </h1>
+
+          <p class="hero-lead" data-reveal data-reveal-delay="2">
+            A plataforma de educação em programação que se adapta a <b>como você aprende</b>.
+            Trilhas de Python, JavaScript e Web, com gamificação, IA e mentoria humana — do zero ao primeiro projeto no ar.
+          </p>
+
+          <div class="hero-cta" data-reveal data-reveal-delay="3">
+            <a href="#cta" class="btn btn-primary">
+              <i data-lucide="rocket"></i> Começar agora
+            </a>
+            <a href="#cursos" class="btn btn-ghost">
+              <i data-lucide="compass"></i> Ver trilhas
+            </a>
+          </div>
+
+          <div class="hero-meta" data-reveal data-reveal-delay="4">
+            <div class="hero-avatars">
+              <div class="stack">
+                <span style="background:#FF6B9D">M</span>
+                <span style="background:#6C5CE7">J</span>
+                <span style="background:#00CFFF">C</span>
+                <span style="background:#00C896">D</span>
+              </div>
+              <div>
+                <div class="stars">★★★★★</div>
+                <small>+12 mil alunos aprendendo</small>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="meta-item">
+              <span class="meta-num gradient-text">96%</span>
+              <span class="meta-lbl">concluem a 1ª trilha</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- editor de código -->
+        <div class="hero-visual" data-reveal data-reveal-delay="2">
+          <div class="code-card float-soft">
+            <div class="code-top">
+              <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+              <span class="file">primeiro_passo.py — <span class="run">▶ run</span></span>
+            </div>
+            <div class="code-body"><span class="ln">1</span><span class="tok-com"># NeuroCode · sua jornada começa aqui</span>
+<span class="ln">2</span><span class="tok-kw">def</span> <span class="tok-fn">aprender</span>(<span class="tok-var">aluno</span>):
+<span class="ln">3</span>    trilha = <span class="tok-fn">recomendar</span>(<span class="tok-var">aluno</span>.perfil)
+<span class="ln">4</span>    <span class="tok-kw">while</span> <span class="tok-var">aluno</span>.curioso:
+<span class="ln">5</span>        <span class="tok-var">aluno</span>.xp += <span class="tok-num">10</span>
+<span class="ln">6</span>        <span class="tok-fn">desbloquear</span>(<span class="tok-str">"conquista"</span>)
+<span class="ln">7</span>    <span class="tok-kw">return</span> <span class="tok-str">"dev 🚀"</span><span class="caret">&nbsp;</span>
+</div>
+            <div class="code-out">→ saída: aluno virou dev 🚀  ·  nível 3  ·  4 dias de sequência 🔥</div>
+          </div>
+
+          <div class="floaty xp float">
+            <span class="ic ic-purple"><i data-lucide="zap"></i></span>
+            <div><strong>+10 XP</strong><span>aula concluída</span></div>
+          </div>
+          <div class="floaty streak float" style="animation-delay:1.2s">
+            <span class="ic ic-orange"><i data-lucide="flame"></i></span>
+            <div><strong>4 dias 🔥</strong><span>sequência ativa</span></div>
+          </div>
+          <div class="floaty badge-f float" style="animation-delay:.6s">
+            <span class="ic ic-gold"><i data-lucide="trophy"></i></span>
+            <div><strong>Nível 3</strong><span>subiu de nível!</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== TRUST / MARQUEE -->
+    <section class="trust">
+      <div class="container">
+        <p>Tecnologias que você domina na NeuroCode</p>
+      </div>
+      <div class="marquee">
+        <ul>
+          <li>Python</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>PHP</li>
+          <li>SQL</li><li>Git</li><li>Algoritmos</li><li>Estrutura de Dados</li><li>APIs</li>
+          <li>Python</li><li>JavaScript</li><li>HTML5</li><li>CSS3</li><li>PHP</li>
+          <li>SQL</li><li>Git</li><li>Algoritmos</li><li>Estrutura de Dados</li><li>APIs</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================================================== STATS -->
+    <section class="section" aria-label="Números da NeuroCode">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat" data-reveal>
+            <div class="num gradient-text"><span data-count="12500">0</span><span class="suffix">+</span></div>
+            <div class="lbl">Alunos ativos</div>
+          </div>
+          <div class="stat" data-reveal data-reveal-delay="1">
+            <div class="num gradient-text"><span data-count="6">0</span></div>
+            <div class="lbl">Trilhas completas</div>
+          </div>
+          <div class="stat" data-reveal data-reveal-delay="2">
+            <div class="num gradient-text"><span data-count="390">0</span><span class="suffix">+</span></div>
+            <div class="lbl">Aulas em vídeo</div>
+          </div>
+          <div class="stat" data-reveal data-reveal-delay="3">
+            <div class="num gradient-text"><span data-count="4.9">0</span></div>
+            <div class="lbl">Nota média ★</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== CURSOS / TRILHAS -->
+    <section class="section" id="cursos">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="layers" style="width:15px"></i> Trilhas de aprendizado</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Escolha por onde <span class="gradient-text">começar a programar</span></h2>
+          <p class="section-sub" data-reveal data-reveal-delay="2">
+            Do primeiro <code style="font-family:var(--font-mono);color:var(--c-cyan)">print()</code> aos algoritmos avançados. Filtre pelo seu nível e siga uma trilha guiada, com aulas, quizzes e projetos.
+          </p>
+        </div>
+
+        <div class="filter-row" id="course-filters" role="tablist" aria-label="Filtrar trilhas por nível"></div>
+        <div class="courses-grid" id="courses-grid"><!-- render via JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== METODOLOGIA -->
+    <section class="section" id="metodologia">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="brain-circuit" style="width:15px"></i> Metodologia NeuroCode</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Aprendizado que se molda <span class="gradient-text">ao seu cérebro</span></h2>
+          <p class="section-sub" data-reveal data-reveal-delay="2">Tudo começa com um quiz de perfil. A partir dele, a plataforma personaliza sua jornada e cada aula se adapta ao jeito que você aprende melhor.</p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature" data-reveal>
+            <div class="f-ic ic-purple"><i data-lucide="sliders-horizontal"></i></div>
+            <h3>Aprendizado adaptativo</h3>
+            <p>A ordem e a profundidade das aulas mudam conforme o seu perfil e o seu desempenho nos quizzes de fixação.</p>
+          </article>
+          <article class="feature" data-reveal data-reveal-delay="1">
+            <div class="f-ic ic-cyan"><i data-lucide="eye"></i></div>
+            <h3>3 modos de estudo</h3>
+            <p>Cada aula tem os modos <b>Visual</b>, <b>Teórico</b> e <b>Prático</b>. Você escolhe a abordagem que faz sentido para você.</p>
+          </article>
+          <article class="feature" data-reveal data-reveal-delay="2">
+            <div class="f-ic ic-green"><i data-lucide="circle-check-big"></i></div>
+            <h3>Quizzes de fixação</h3>
+            <p>Ao final de cada aula, perguntas com feedback e explicação consolidam o que você acabou de aprender.</p>
+          </article>
+          <article class="feature" data-reveal>
+            <div class="f-ic ic-gold"><i data-lucide="route"></i></div>
+            <h3>Trilhas guiadas</h3>
+            <p>Um caminho claro do iniciante ao avançado, sem você se perder sobre qual é o próximo passo.</p>
+          </article>
+          <article class="feature" data-reveal data-reveal-delay="1">
+            <div class="f-ic ic-pink"><i data-lucide="bot"></i></div>
+            <h3>Assistente NeuroBot</h3>
+            <p>Uma IA disponível 24h para explicar conceitos, dar exemplos e destravar você quando empacar.</p>
+          </article>
+          <article class="feature" data-reveal data-reveal-delay="2">
+            <div class="f-ic ic-orange"><i data-lucide="headphones"></i></div>
+            <h3>Mentoria humana</h3>
+            <p>Profissionais de verdade para orientar carreira, revisar projetos e responder o que a IA não alcança.</p>
+          </article>
+        </div>
+
+        <div class="study-modes" data-reveal>
+          <span class="chip is-active"><i data-lucide="image" style="width:15px;vertical-align:-2px"></i> Visual</span>
+          <span class="chip"><i data-lucide="book-open" style="width:15px;vertical-align:-2px"></i> Teórico</span>
+          <span class="chip"><i data-lucide="terminal" style="width:15px;vertical-align:-2px"></i> Prático</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== GAMIFICAÇÃO -->
+    <section class="section" id="gamificacao">
+      <div class="container gami">
+        <div data-reveal>
+          <span class="eyebrow"><i data-lucide="gamepad-2" style="width:15px"></i> Gamificação</span>
+          <h2 class="section-title" style="text-align:left;margin-top:18px">Estudar vira um <span class="gradient-text">jogo que você quer jogar</span></h2>
+          <p class="section-sub" style="text-align:left;margin-left:0">Cada aula te aproxima do próximo nível. XP, conquistas e ranking transformam a constância em algo divertido.</p>
+
+          <ul class="gami-list">
+            <li>
+              <span class="g-ic ic-purple"><i data-lucide="zap"></i></span>
+              <div><h4>XP &amp; Níveis</h4><p>Ganhe pontos de experiência a cada aula e quiz, e suba de nível conforme avança.</p></div>
+            </li>
+            <li>
+              <span class="g-ic ic-gold"><i data-lucide="award"></i></span>
+              <div><h4>Conquistas</h4><p>Desbloqueie badges por marcos do seu aprendizado e colecione todas.</p></div>
+            </li>
+            <li>
+              <span class="g-ic ic-orange"><i data-lucide="flame"></i></span>
+              <div><h4>Sequências (streaks)</h4><p>Estude todo dia, mantenha a chama acesa 🔥 e receba lembretes motivacionais.</p></div>
+            </li>
+            <li>
+              <span class="g-ic ic-cyan"><i data-lucide="target"></i></span>
+              <div><h4>Ranking</h4><p>Dispute posições com outros alunos e veja seu nome subir no pódio.</p></div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- painel "Seu progresso" -->
+        <div class="progress-panel" data-reveal data-reveal-delay="1">
+          <div class="pp-head">
+            <h3>Seu progresso</h3>
+            <span class="badge is-cyan"><i data-lucide="trending-up" style="width:13px"></i> esta semana</span>
+          </div>
+          <div class="pp-week">
+            <div class="row"><span>Meta semanal de XP</span><b>75 / 100</b></div>
+            <div class="progress" data-progress="75"><span></span></div>
+          </div>
+          <div class="pp-stats">
+            <div class="pp-stat"><div class="emoji">🏆</div><div class="v">3</div><div class="k">nível</div></div>
+            <div class="pp-stat"><div class="emoji">🔥</div><div class="v">4</div><div class="k">dias</div></div>
+            <div class="pp-stat"><div class="emoji">🎯</div><div class="v">4º</div><div class="k">ranking</div></div>
+          </div>
+
+          <div class="podium">
+            <div class="p-col p2">
+              <div class="p-av" style="background:#6C5CE7">A</div>
+              <div class="p-bar">2</div>
+              <div class="p-name">Ana</div><div class="p-pts">180 pts</div>
+            </div>
+            <div class="p-col p1">
+              <div class="p-av" style="background:#FFD700;color:#1a1a1a"><span class="crown">👑</span>L</div>
+              <div class="p-bar">1</div>
+              <div class="p-name">Lucas</div><div class="p-pts">240 pts</div>
+            </div>
+            <div class="p-col p3">
+              <div class="p-av" style="background:#00CFFF;color:#04222b">B</div>
+              <div class="p-bar">3</div>
+              <div class="p-name">Bia</div><div class="p-pts">150 pts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== NEUROBOT -->
+    <section class="section" id="neurobot">
+      <div class="container bot">
+        <!-- janela do chat -->
+        <div class="bot-window" data-reveal>
+          <div class="bot-head">
+            <span class="bot-ava"><i data-lucide="bot"></i></span>
+            <div>
+              <h4>NeuroBot</h4>
+              <span class="status">online · responde na hora</span>
+            </div>
+          </div>
+          <div class="bot-log" id="bot-log" aria-live="polite"></div>
+          <div class="bot-suggest" id="bot-suggest"></div>
+          <form class="bot-input" id="bot-form" autocomplete="off">
+            <input id="bot-input" type="text" placeholder="Pergunte algo ao NeuroBot…" aria-label="Mensagem para o NeuroBot" />
+            <button type="submit" aria-label="Enviar"><i data-lucide="send"></i></button>
+          </form>
+        </div>
+
+        <div data-reveal data-reveal-delay="1">
+          <span class="eyebrow"><i data-lucide="sparkles" style="width:15px"></i> Assistente de IA</span>
+          <h2 class="section-title" style="text-align:left;margin-top:18px">O <span class="gradient-text">NeuroBot</span> nunca te deixa empacado</h2>
+          <p class="section-sub" style="text-align:left;margin-left:0">Um monitor de IA dentro de cada aula. Pergunte do seu jeito, receba exemplos de código e explicações sob medida — a qualquer hora.</p>
+
+          <ul class="bot-feats">
+            <li>
+              <span class="b-ic ic-cyan"><i data-lucide="clock"></i></span>
+              <div><strong>Disponível 24 horas</strong>Tire dúvidas no seu horário, mesmo às 2 da manhã.</div>
+            </li>
+            <li>
+              <span class="b-ic ic-purple"><i data-lucide="message-square-code"></i></span>
+              <div><strong>Explica com código</strong>Respostas com exemplos práticos na linguagem que você estuda.</div>
+            </li>
+            <li>
+              <span class="b-ic ic-green"><i data-lucide="compass"></i></span>
+              <div><strong>Recomenda trilhas</strong>Não sabe por onde começar? Ele indica o melhor caminho.</div>
+            </li>
+          </ul>
+          <p style="color:var(--c-text-dim);font-size:.85rem;margin-top:18px">
+            <i data-lucide="info" style="width:14px;vertical-align:-2px"></i>
+            Demonstração funcional — experimente conversar com o NeuroBot ao lado.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== MENTORIA -->
+    <section class="section" aria-label="Mentoria">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="users" style="width:15px"></i> Mentoria humana</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Gente de verdade no seu <span class="gradient-text">plano de carreira</span></h2>
+        </div>
+
+        <div class="mentor-card" data-reveal>
+          <div class="mentor-photo">
+            CS
+            <span class="ring"></span>
+          </div>
+          <div class="mentor-info">
+            <h3>Carlos Silva</h3>
+            <div class="role">Mentor · Dev Full-Stack Sênior</div>
+            <p>“Mais do que ensinar sintaxe, ajudo cada aluno a montar um plano realista para chegar ao primeiro emprego como desenvolvedor. Revisamos projetos, simulamos entrevistas e ajustamos a rota.”</p>
+            <div class="mentor-tags">
+              <span class="badge is-cyan">Python</span>
+              <span class="badge is-gold">JavaScript</span>
+              <span class="badge is-green">Carreira</span>
+              <span class="badge is-pink">Code review</span>
+            </div>
+            <a href="#planos" class="btn btn-primary btn-sm"><i data-lucide="calendar"></i> Agendar mentoria</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== PLANOS -->
+    <section class="section" id="planos">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="badge-dollar-sign" style="width:15px"></i> Planos</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Comece grátis, evolua <span class="gradient-text">quando quiser</span></h2>
+          <p class="section-sub" data-reveal data-reveal-delay="2">Sem fidelidade. Cancele a qualquer momento. Todos os planos incluem acesso pelo celular.</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Explorar -->
+          <article class="plan" data-reveal>
+            <h3>Explorar</h3>
+            <p class="plan-desc">Para sentir o gostinho e dar os primeiros passos.</p>
+            <div class="price"><span class="v">R$0</span><span class="per">/mês</span></div>
+            <small style="color:var(--c-text-dim)">para sempre</small>
+            <ul>
+              <li><i data-lucide="check"></i> Quiz de perfil + 1 trilha iniciante</li>
+              <li><i data-lucide="check"></i> XP, níveis e conquistas</li>
+              <li><i data-lucide="check"></i> NeuroBot (10 perguntas/dia)</li>
+              <li class="off"><i data-lucide="x"></i> Mentoria humana</li>
+              <li class="off"><i data-lucide="x"></i> Certificado digital</li>
+            </ul>
+            <a href="#cta" class="btn btn-ghost btn-block">Criar conta grátis</a>
+          </article>
+
+          <!-- Pro (destaque) -->
+          <article class="plan is-featured" data-reveal data-reveal-delay="1">
+            <span class="plan-flag">MAIS POPULAR</span>
+            <h3>Pro</h3>
+            <p class="plan-desc">Para quem quer aprender de verdade, sem limites.</p>
+            <div class="price"><span class="v">R$39</span><span class="per">/mês</span></div>
+            <small style="color:var(--c-text-dim)">cobrado mensalmente</small>
+            <ul>
+              <li><i data-lucide="check"></i> <b>Todas</b> as trilhas e linguagens</li>
+              <li><i data-lucide="check"></i> NeuroBot ilimitado 24h</li>
+              <li><i data-lucide="check"></i> Ranking, streaks e relatórios</li>
+              <li><i data-lucide="check"></i> Certificado digital por trilha</li>
+              <li><i data-lucide="check"></i> 1 mentoria em grupo /mês</li>
+            </ul>
+            <a href="#cta" class="btn btn-primary btn-block">Assinar o Pro</a>
+          </article>
+
+          <!-- Carreira -->
+          <article class="plan" data-reveal data-reveal-delay="2">
+            <h3>Carreira</h3>
+            <p class="plan-desc">Acompanhamento de perto rumo ao primeiro emprego.</p>
+            <div class="price"><span class="v">R$89</span><span class="per">/mês</span></div>
+            <small style="color:var(--c-text-dim)">cobrado mensalmente</small>
+            <ul>
+              <li><i data-lucide="check"></i> Tudo do plano Pro</li>
+              <li><i data-lucide="check"></i> <b>Mentoria 1:1 semanal</b></li>
+              <li><i data-lucide="check"></i> Revisão de projetos e portfólio</li>
+              <li><i data-lucide="check"></i> Simulação de entrevistas</li>
+              <li><i data-lucide="check"></i> Encaminhamento para vagas</li>
+            </ul>
+            <a href="#cta" class="btn btn-cyan btn-block">Quero acelerar</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================== DEPOIMENTOS -->
+    <section class="section" aria-label="Depoimentos">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="quote" style="width:15px"></i> Quem estuda, recomenda</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Histórias de quem <span class="gradient-text">mudou de rota</span></h2>
+        </div>
+        <div class="testi-grid" id="testi-grid"><!-- render via JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== FAQ -->
+    <section class="section" aria-label="Perguntas frequentes">
+      <div class="container">
+        <div class="section-head">
+          <span class="eyebrow" data-reveal><i data-lucide="help-circle" style="width:15px"></i> Perguntas frequentes</span>
+          <h2 class="section-title" data-reveal data-reveal-delay="1">Ainda em <span class="gradient-text">dúvida?</span></h2>
+        </div>
+        <div class="faq" id="faq"><!-- render via JS --></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== CTA -->
+    <section class="section" id="cta">
+      <div class="container">
+        <div class="cta" data-reveal>
+          <span class="eyebrow" style="border-color:rgba(255,255,255,.2)"><i data-lucide="rocket" style="width:15px"></i> Sua jornada começa hoje</span>
+          <h2 style="margin-top:18px">Receba uma <span class="gradient-text">aula gratuita</span> e comece a programar</h2>
+          <p>Deixe seu e-mail e enviaremos seu acesso à primeira trilha + uma aula prática para você começar agora mesmo.</p>
+
+          <form class="cta-form" data-form="inscricao" data-origem="cta-home">
+            <input class="input" type="email" name="email" placeholder="seu-melhor@email.com" required aria-label="Seu e-mail" />
+            <button type="submit" class="btn btn-primary"><i data-lucide="send"></i> Quero começar</button>
+            <span class="hint">Sem spam. Você controla suas notificações. Cancele quando quiser.</span>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================== FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#topo" class="brand">
+            <span class="brand-mark"><img src="static/img/logo.svg" alt="" /></span>
+            <span><b>Neuro</b><span class="accent">Code</span></span>
+          </a>
+          <p>Educação em programação EAD, gamificada e adaptativa. Seu cérebro, seu ritmo, seu código.</p>
+          <div class="footer-social">
+            <a class="icon-btn" href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a class="icon-btn" href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9l5 3-5 3z" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a class="icon-btn" href="#" aria-label="GitHub">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.36 1.09 2.94.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+            </a>
+            <a class="icon-btn" href="#" aria-label="LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M6.94 5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0zM3.4 8.5h3.06V21H3.4V8.5zm5.06 0h2.93v1.71h.04c.41-.77 1.4-1.58 2.88-1.58 3.08 0 3.65 2.03 3.65 4.66V21h-3.06v-5.54c0-1.32-.02-3.02-1.84-3.02-1.84 0-2.12 1.44-2.12 2.92V21H8.46V8.5z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h5>Plataforma</h5>
+          <ul>
+            <li><a href="#cursos">Trilhas</a></li>
+            <li><a href="#metodologia">Metodologia</a></li>
+            <li><a href="#gamificacao">Gamificação</a></li>
+            <li><a href="#neurobot">NeuroBot</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Empresa</h5>
+          <ul>
+            <li><a href="#planos">Planos</a></li>
+            <li><a href="#">Sobre nós</a></li>
+            <li><a href="#">Mentores</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5>Suporte</h5>
+          <ul>
+            <li><a href="#neurobot">Central de ajuda</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Termos de uso</a></li>
+            <li><a href="#">Privacidade</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 NeuroCode · Todos os direitos reservados.</span>
+        <span class="made">Feito com <i data-lucide="heart"></i> para quem aprende a programar.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Lucide icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <!-- App -->
+  <script src="static/js/data.js"></script>
+  <script src="static/js/ui.js"></script>
+  <script src="static/js/neurobot.js"></script>
+  <script src="static/js/forms.js"></script>
+</body>
+</html>
