@@ -1,0 +1,219 @@
+/* ==========================================================================
+   NeuroCode · Componentes reutilizáveis
+   ========================================================================== */
+
+/* ---- Botões ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  line-height: 1;
+  padding: 16px 26px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease),
+              background 0.25s var(--ease), border-color 0.25s var(--ease), opacity 0.2s;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.btn:active { transform: translateY(1px) scale(0.99); }
+
+.btn-primary {
+  background: var(--grad-brand);
+  color: #fff;
+  box-shadow: var(--shadow-btn);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 32px rgba(var(--rgb-purple), 0.55);
+}
+
+.btn-ghost {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+.btn-ghost:hover {
+  border-color: var(--c-purple);
+  background: rgba(var(--rgb-purple), 0.14);
+  transform: translateY(-2px);
+}
+
+.btn-cyan {
+  background: linear-gradient(135deg, #00CFFF, #6C5CE7);
+  color: #061018;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(var(--rgb-cyan), 0.35);
+}
+.btn-cyan:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(var(--rgb-cyan), 0.5); }
+
+.btn-sm { padding: 11px 18px; font-size: 0.9rem; }
+.btn-block { width: 100%; }
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  position: relative;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+.icon-btn:hover { background: rgba(var(--rgb-purple), 0.18); border-color: var(--c-purple); transform: translateY(-1px); }
+.icon-btn svg { width: 20px; height: 20px; }
+
+/* ---- Cards genéricos ---- */
+.card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.glass {
+  background: color-mix(in srgb, var(--c-card) 78%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ---- Chips de filtro ---- */
+.chip {
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--c-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--c-text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s var(--ease);
+}
+.chip:hover { color: var(--c-text); border-color: var(--c-purple); }
+.chip.is-active {
+  background: var(--grad-brand);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(var(--rgb-purple), 0.4);
+}
+
+/* ---- Badges ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background: rgba(var(--rgb-purple), 0.16);
+  color: var(--c-purple-accent);
+  border: 1px solid var(--c-border-soft);
+}
+.badge.is-green { background: rgba(0, 200, 150, 0.14); color: var(--c-green); border-color: rgba(0, 200, 150, 0.3); }
+.badge.is-cyan  { background: rgba(0, 207, 255, 0.14); color: var(--c-cyan); border-color: rgba(0, 207, 255, 0.3); }
+.badge.is-gold  { background: rgba(255, 215, 0, 0.14); color: var(--c-gold); border-color: rgba(255, 215, 0, 0.3); }
+.badge.is-orange{ background: rgba(255, 107, 48, 0.14); color: var(--c-orange); border-color: rgba(255, 107, 48, 0.3); }
+.badge.is-pink  { background: rgba(255, 107, 157, 0.14); color: var(--c-pink); border-color: rgba(255, 107, 157, 0.3); }
+
+/* ---- Barra de progresso ---- */
+.progress {
+  height: 10px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+.progress > span {
+  display: block;
+  height: 100%;
+  border-radius: 50px;
+  background: var(--grad-brand-cyan);
+  width: 0;
+  transition: width 1.1s var(--ease);
+}
+
+/* ---- Inputs / formulários ---- */
+.field { position: relative; }
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--c-text-muted);
+  margin-bottom: 8px;
+}
+.input,
+.textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 15px 18px;
+  color: var(--c-text);
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.input::placeholder,
+.textarea::placeholder { color: var(--c-text-dim); }
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--c-purple);
+  background: rgba(var(--rgb-purple), 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--rgb-purple), 0.15);
+}
+.textarea { resize: vertical; min-height: 120px; }
+
+/* ---- Avatar ---- */
+.avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  color: #fff;
+  background: var(--grad-brand);
+  flex-shrink: 0;
+}
+
+/* ---- Pílula de notificação ---- */
+.dot-badge {
+  position: absolute;
+  top: 6px; right: 6px;
+  min-width: 18px; height: 18px;
+  padding: 0 5px;
+  border-radius: 50px;
+  background: var(--c-red-soft);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--c-bg-1);
+}
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  translate: -50% 30px;
+  z-index: 200;
+  background: var(--c-card-3);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  padding: 14px 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--ease), translate 0.3s var(--ease);
+  max-width: min(92vw, 420px);
+}
+.toast.is-show { opacity: 1; translate: -50% 0; }
+.toast svg { color: var(--c-green); width: 20px; height: 20px; flex-shrink: 0; }

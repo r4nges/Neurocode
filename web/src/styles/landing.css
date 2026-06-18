@@ -1,0 +1,55 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--c-border, #2D2860);
+}
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+}
+.brand {
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: var(--c-text, #fff);
+}
+.brand .accent {
+  color: var(--c-cyan, #00CFFF);
+}
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.hero {
+  text-align: center;
+  padding: 80px 0 100px;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+.hero-lead {
+  max-width: 620px;
+  margin: 0 auto 28px;
+  color: var(--c-text-dim, #b9b6d8);
+  font-size: 1.1rem;
+}
+.hero-cta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.api-status {
+  margin-top: 26px;
+  font-size: 0.85rem;
+  color: var(--c-green, #00C896);
+}
+.api-status.off {
+  color: var(--c-pink, #FF6B9D);
+}
