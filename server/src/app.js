@@ -3,6 +3,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import healthRouter from './routes/health.js';
+import { issueCsrfToken } from './middleware/csrf.js';
 import { notFound, errorHandler } from './middleware/error.js';
 
 const SESSION_SECRET = process.env.SESSION_SECRET || 'dev-insecure-secret';
@@ -21,6 +22,11 @@ app.use(
 );
 app.use(express.json());
 app.use(cookieParser(SESSION_SECRET));
+app.use(issueCsrfToken);
+
+app.get('/api/csrf', (req, res) => {
+  res.json({ csrfToken: req.cookies['nc_csrf'] });
+});
 
 app.use('/api', healthRouter);
 
