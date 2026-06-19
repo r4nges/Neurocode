@@ -10,7 +10,7 @@ import {
 } from '../auth/session.js';
 import { requireAuth } from '../middleware/auth.js';
 import { verifyCsrf } from '../middleware/csrf.js';
-import { loginLimiter } from '../middleware/rateLimit.js';
+import { loginLimiter, registerLimiter } from '../middleware/rateLimit.js';
 
 const router = Router();
 
@@ -27,7 +27,22 @@ function toPublicUser(u) {
   };
 }
 
-router.post('/register', verifyCsrf, async (req, res, next) => {
+// Hash dummy memoizado: garante que /login rode argon2 mesmo quando o e-mail não
+// existe, equalizando o tempo de resposta entre "e-mail inexistente" e "senha errada"
+// (fecha o canal lateral de enumeração por timing).
+let dummyHashPromise = null;
+function getDummyHash() {
+  if (!dummyHashPromise) {
+    dummyHashPromise = hashPassword('timing-equalizer-not-a-real-password');
+  }
+  return dummyHashPromise;
+}
+
+// Nota: o diferencial de status 409 (e-mail existe) vs 201 (livre) ainda permite
+// enumeração de contas. A mitigação completa exige fluxo de verificação de e-mail
+// ("enviamos um link"), que está fora do escopo do protótipo (pós-protótipo no plano).
+// A mensagem genérica + rate-limit são as mitigações parciais nesta fase.
+router.post('/register', verifyCsrf, registerLimiter, async (req, res, next) => {
   try {
     const parsed = registerSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -51,13 +66,14 @@ router.post('/register', verifyCsrf, async (req, res, next) => {
   }
 });
 
-router.post('/login', loginLimiter, verifyCsrf, async (req, res, next) => {
+router.post('/login', verifyCsrf, loginLimiter, async (req, res, next) => {
   try {
     const parsed = loginSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ error: 'Dados inválidos.' });
     const { email, password } = parsed.data;
     const user = await prisma.user.findUnique({ where: { email } });
-    const ok = user ? await verifyPassword(user.passwordHash, password) : false;
+    const hashToCheck = user?.passwordHash ?? (await getDummyHash());
+    const ok = await verifyPassword(hashToCheck, password).catch(() => false);
     if (!user || !ok) {
       return res.status(401).json({ error: 'Credenciais inválidas.' });
     }

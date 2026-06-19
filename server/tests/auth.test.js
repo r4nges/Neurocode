@@ -50,7 +50,7 @@ describe('POST /api/auth/register', () => {
     const res = await agent
       .post('/api/auth/register')
       .set('x-csrf-token', csrf)
-      .send({ name: 'X', email: newEmail(), password: 'fraca' });
+      .send({ name: 'Rangel', email: newEmail(), password: 'fraca' });
     expect(res.status).toBe(400);
   });
 

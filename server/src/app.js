@@ -14,6 +14,10 @@ if (!process.env.SESSION_SECRET && process.env.NODE_ENV === 'production') {
 
 const app = express();
 
+// Protótipo sem proxy reverso → req.ip é o IP real do cliente. Produção atrás de
+// proxy DEVE trocar para o nº de hops confiáveis (ver server/src/middleware/rateLimit.js).
+app.set('trust proxy', false);
+
 app.use(helmet());
 app.use(
   cors({
