@@ -38,6 +38,10 @@ function getDummyHash() {
   return dummyHashPromise;
 }
 
+// Aquece o hash dummy no carregamento do módulo para que a primeira tentativa de
+// login com e-mail inexistente já tenha o tempo equalizado (sem janela de cold-start).
+getDummyHash().catch(() => {});
+
 // Nota: o diferencial de status 409 (e-mail existe) vs 201 (livre) ainda permite
 // enumeração de contas. A mitigação completa exige fluxo de verificação de e-mail
 // ("enviamos um link"), que está fora do escopo do protótipo (pós-protótipo no plano).
@@ -62,6 +66,9 @@ router.post('/register', verifyCsrf, registerLimiter, async (req, res, next) => 
     res.cookie(SESSION_COOKIE, sessionId, sessionCookieOptions);
     res.status(201).json({ user: toPublicUser(user) });
   } catch (e) {
+    if (e?.code === 'P2002') {
+      return res.status(409).json({ error: 'Não foi possível concluir o cadastro.' });
+    }
     next(e);
   }
 });
