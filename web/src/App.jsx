@@ -1,13 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
 import Landing from './pages/Landing.jsx';
-
-function Login() {
-  return <h1>Entrar</h1>;
-}
-
-function Register() {
-  return <h1>Criar conta</h1>;
-}
+import Login from './pages/Login.jsx';
+import Register from './pages/Register.jsx';
+import Dashboard from './pages/Dashboard.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 export default function App() {
   return (
@@ -15,6 +11,9 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
     </Routes>
   );
 }
