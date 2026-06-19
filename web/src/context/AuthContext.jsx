@@ -35,8 +35,11 @@ export function AuthProvider({ children }) {
   }
 
   async function logout() {
-    await apiPost('/auth/logout', {});
-    setUser(null);
+    try {
+      await apiPost('/auth/logout', {});
+    } finally {
+      setUser(null);
+    }
   }
 
   return (

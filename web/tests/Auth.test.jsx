@@ -51,7 +51,6 @@ describe('Guarda de rotas', () => {
 
 describe('Cadastro', () => {
   it('cria conta e cai na dashboard', async () => {
-    vi.stubGlobal('fetch', mockApi());
     renderAt('/register');
     fireEvent.change(await screen.findByLabelText(/nome/i), { target: { value: 'Rangel' } });
     fireEvent.change(screen.getByLabelText(/e-mail/i), { target: { value: 'r@neuro.dev' } });
