@@ -165,20 +165,25 @@ export async function seedContent(prisma) {
           badgeName: c.badgeName, badgeIcon: c.badgeIcon, pointsReward: c.pointsReward,
         },
       });
-      // Recria as aulas da matéria para refletir edições de conteúdo sem duplicar.
-      // onDelete: Cascade limpa Progress órfão das aulas removidas.
-      await prisma.lesson.deleteMany({ where: { courseId: course.id } });
+      // Atualiza aulas no lugar (IDs estáveis) para evitar corrida com testes paralelos.
+      // Aulas cujo `order` não existe mais no seed são removidas ao final.
       for (const l of c.lessons ?? []) {
-        await prisma.lesson.create({
-          data: {
-            courseId: course.id,
-            title: l.title,
-            order: l.order,
-            content: JSON.stringify(l.content),
-            conceptTags: JSON.stringify(l.conceptTags),
-          },
-        });
+        const data = {
+          title: l.title,
+          content: JSON.stringify(l.content),
+          conceptTags: JSON.stringify(l.conceptTags),
+        };
+        const existing = await prisma.lesson.findFirst({ where: { courseId: course.id, order: l.order } });
+        if (existing) {
+          await prisma.lesson.update({ where: { id: existing.id }, data });
+        } else {
+          await prisma.lesson.create({ data: { courseId: course.id, order: l.order, ...data } });
+        }
       }
+      const keptOrders = (c.lessons ?? []).map((l) => l.order);
+      await prisma.lesson.deleteMany({
+        where: { courseId: course.id, order: { notIn: keptOrders.length ? keptOrders : [-1] } },
+      });
     }
   }
 }

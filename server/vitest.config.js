@@ -11,8 +11,5 @@ export default defineConfig({
       NODE_ENV: 'test',
     },
     globalSetup: './tests/global-setup.js',
-    // Serializa os arquivos de teste para evitar corrida entre content.seed.test.js
-    // (que re-semeia e recria IDs de aulas) e content.service.test.js.
-    fileParallelism: false,
   },
 });
