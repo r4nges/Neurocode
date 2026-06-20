@@ -8,19 +8,21 @@ datasource db {
 }
 
 model User {
-  id             Int       @id @default(autoincrement())
+  id             Int        @id @default(autoincrement())
   name           String
-  email          String    @unique
+  email          String     @unique
   passwordHash   String
-  plan           String    @default("free")
-  xp             Int       @default(0)
-  level          Int       @default(1)
-  neuroPoints    Int       @default(0)
-  streak         Int       @default(0)
+  plan           String     @default("free")
+  xp             Int        @default(0)
+  level          Int        @default(1)
+  neuroPoints    Int        @default(0)
+  streak         Int        @default(0)
   lastActiveDate DateTime?
-  createdAt      DateTime  @default(now())
+  onboardedAt    DateTime?
+  createdAt      DateTime   @default(now())
   sessions       Session[]
   progress       Progress[]
+  attempts       Attempt[]
 }
 
 model Session {
@@ -65,6 +67,7 @@ model Lesson {
   content     String
   conceptTags String
   progress    Progress[]
+  exercises   Exercise[]
 }
 
 model Progress {
@@ -78,4 +81,33 @@ model Progress {
   completedAt DateTime @default(now())
 
   @@unique([userId, lessonId])
+}
+
+model Exercise {
+  id         Int       @id @default(autoincrement())
+  lessonId   Int
+  lesson     Lesson    @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  type       String
+  prompt     String
+  options    String
+  answer     String
+  difficulty Int
+  conceptTag String
+  source     String    @default("bank")
+  createdAt  DateTime  @default(now())
+  attempts   Attempt[]
+}
+
+model Attempt {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exerciseId   Int
+  exercise     Exercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+  correct      Boolean
+  sessionToken String?
+  answeredAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([userId, sessionToken])
 }
