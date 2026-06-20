@@ -1,7 +1,9 @@
 import prisma from '../src/db/client.js';
+import { seedContent } from '../src/content/seed.js';
 
 async function main() {
-  console.log('Seed: nada para semear ainda (o conteúdo entra na Fase 3).');
+  await seedContent(prisma);
+  console.log('Seed: conteúdo Front-end (HTML/CSS/JS) + roadmaps bloqueados aplicados.');
 }
 
 main()
