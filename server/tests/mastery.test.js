@@ -1,9 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { computeMastery, levelFor } from '../src/ai/mastery.js';
 
 // helper: tentativa com timestamp incremental
 let t = 0;
 const a = (conceptTag, correct) => ({ conceptTag, correct, answeredAt: new Date(Date.now() + t++) });
+
+beforeEach(() => { t = 0; });
 
 describe('computeMastery', () => {
   it('conceito sem tentativas é new (via levelFor)', () => {

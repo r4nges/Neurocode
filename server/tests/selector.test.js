@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { sessionSize, buildSession } from '../src/ai/selector.js';
 
 // pool helper: id estável, conceito, dificuldade
@@ -7,6 +7,8 @@ const ex = (conceptTag, difficulty) => ({ id: id++, conceptTag, difficulty });
 
 // maestria fake como Map de níveis
 const mastery = (entries) => new Map(entries.map(([c, level]) => [c, { level }]));
+
+beforeEach(() => { id = 1; });
 
 describe('sessionSize', () => {
   it('base 3 sem conceito fraco', () => {
