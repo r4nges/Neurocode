@@ -23,6 +23,12 @@ export async function buildLessonSession(userId, lessonId) {
 
   const session = buildSession(mastery, concepts, pool);
   const sessionToken = randomUUID();
+
+  // Persiste a sessão emitida antes de construir a resposta.
+  await prisma.lessonSession.create({
+    data: { token: sessionToken, userId, lessonId, exerciseIds: JSON.stringify(session.map((e) => e.id)) },
+  });
+
   const exercises = session.map((e) => ({
     id: e.id,
     type: e.type,
@@ -35,34 +41,40 @@ export async function buildLessonSession(userId, lessonId) {
 }
 
 // Corrige uma resposta. Grava Attempt só na 1ª vez do exercício sob o token.
+// Valida que o token é uma sessão emitida pelo servidor, pertence ao usuário e contém o exercício.
 export async function gradeAttempt(userId, exerciseId, sessionToken, submitted) {
+  const ls = sessionToken ? await prisma.lessonSession.findUnique({ where: { token: sessionToken } }) : null;
+  if (!ls || ls.userId !== userId) return { error: 'invalid-session' };
+  const issued = JSON.parse(ls.exerciseIds);
+  if (!issued.includes(exerciseId)) return { error: 'invalid-session' };
   const exercise = await prisma.exercise.findUnique({ where: { id: exerciseId } });
   if (!exercise) return { error: 'not-found' };
+  const view = await getLesson(ls.lessonId, userId);
+  if (view && view.status === 'locked') return { error: 'locked' };
   const correct = grade(exercise, submitted);
-  const existing = sessionToken
-    ? await prisma.attempt.findFirst({ where: { userId, exerciseId, sessionToken } })
-    : null;
+  const existing = await prisma.attempt.findFirst({ where: { userId, exerciseId, sessionToken } });
   if (!existing) {
-    await prisma.attempt.create({
-      data: { userId, exerciseId, correct, sessionToken: sessionToken ?? null },
-    });
+    await prisma.attempt.create({ data: { userId, exerciseId, correct, sessionToken } });
   }
-  return { correct, solution: JSON.parse(exercise.answer) };
+  return { correct };
 }
 
-// Conclui a aula por limiar (>=80% de acerto de 1ª tentativa sob o token).
+// Conclui a aula por limiar (>=80% de acerto). Denominador = exercícios emitidos na sessão.
 export async function completeSession(userId, lessonId, sessionToken) {
+  const ls = sessionToken ? await prisma.lessonSession.findUnique({ where: { token: sessionToken } }) : null;
+  if (!ls || ls.userId !== userId || ls.lessonId !== lessonId) return { error: 'invalid-session' };
   const view = await getLesson(lessonId, userId);
   if (!view) return { error: 'not-found' };
   if (view.status === 'locked') return { error: 'locked' };
 
+  const issued = JSON.parse(ls.exerciseIds);
+  const total = issued.length;
   const attempts = await prisma.attempt.findMany({
-    where: { userId, sessionToken, exercise: { lessonId } },
-    select: { correct: true },
+    where: { userId, sessionToken, exerciseId: { in: issued } },
+    select: { exerciseId: true, correct: true },
   });
-  const total = attempts.length;
-  const correct = attempts.filter((a) => a.correct).length;
-  const score = total ? Math.round((correct / total) * 100) : 0;
+  const correctSet = new Set(attempts.filter((a) => a.correct).map((a) => a.exerciseId));
+  const score = total ? Math.round((correctSet.size / total) * 100) : 0;
 
   if (total === 0 || score < PASS_THRESHOLD) {
     return { ok: true, completed: false, score };
@@ -74,15 +86,11 @@ export async function completeSession(userId, lessonId, sessionToken) {
     create: { userId, lessonId, status: 'completed', score },
   });
 
-  // Próxima aula + se a matéria ficou completa (reaproveita o nextLessonId já derivado por getLesson).
   const siblings = await prisma.lesson.findMany({
-    where: { course: { slug: view.courseSlug } },
-    select: { id: true },
-    orderBy: { order: 'asc' },
+    where: { course: { slug: view.courseSlug } }, select: { id: true }, orderBy: { order: 'asc' },
   });
   const done = await prisma.progress.findMany({
-    where: { userId, lessonId: { in: siblings.map((l) => l.id) }, status: 'completed' },
-    select: { lessonId: true },
+    where: { userId, lessonId: { in: siblings.map((l) => l.id) }, status: 'completed' }, select: { lessonId: true },
   });
   const courseCompleted = siblings.length > 0 && done.length === siblings.length;
   return { ok: true, completed: true, score, nextLessonId: view.nextLessonId, courseCompleted };

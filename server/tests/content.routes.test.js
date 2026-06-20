@@ -73,9 +73,9 @@ describe('Sessão e conclusão de aula', () => {
     const token = sess.body.sessionToken;
 
     // Responde tudo certo (busca o answer real no banco — server-side, é teste).
-    const prisma = (await import('../src/db/client.js')).default;
+    const prismaDb = (await import('../src/db/client.js')).default;
     for (const ex of sess.body.exercises) {
-      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      const real = await prismaDb.exercise.findUnique({ where: { id: ex.id } });
       const att = await agent.post(`/api/exercises/${ex.id}/attempt`)
         .set('x-csrf-token', csrf)
         .send({ sessionToken: token, answer: JSON.parse(real.answer) });
@@ -104,6 +104,24 @@ describe('Sessão e conclusão de aula', () => {
     const res = await agent.get(`/api/lessons/${lockedLessonId}/session`);
     expect(res.status).toBe(409);
   });
+
+  it('401 em POST /complete sem sessão de usuário', async () => {
+    const [first] = await htmlLessonIds();
+    const res = await request(app)
+      .post(`/api/lessons/${first}/complete`)
+      .send({});
+    expect(res.status).toBe(401);
+  });
+
+  it('400 em POST /complete sem sessionToken no body', async () => {
+    const { agent, csrf } = await authedAgent();
+    const [first] = await htmlLessonIds();
+    const res = await agent
+      .post(`/api/lessons/${first}/complete`)
+      .set('x-csrf-token', csrf)
+      .send({});
+    expect(res.status).toBe(400);
+  });
 });
 
 afterAll(async () => {
@@ -111,6 +129,7 @@ afterAll(async () => {
   for (const user of users) {
     await prisma.attempt.deleteMany({ where: { userId: user.id } });
     await prisma.progress.deleteMany({ where: { userId: user.id } });
+    await prisma.lessonSession.deleteMany({ where: { userId: user.id } });
     await prisma.user.delete({ where: { id: user.id } });
   }
   await prisma.$disconnect();

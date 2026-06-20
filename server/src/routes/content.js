@@ -66,6 +66,7 @@ router.post('/lessons/:id/complete', requireAuth, verifyCsrf, async (req, res, n
     const { sessionToken } = req.body ?? {};
     if (!sessionToken) return res.status(400).json({ error: 'sessionToken é obrigatório.' });
     const result = await completeSession(req.user.id, id, sessionToken);
+    if (result.error === 'invalid-session') return res.status(403).json({ error: 'Sessão inválida.' });
     if (result.error === 'not-found') return res.status(404).json({ error: 'Aula não encontrada.' });
     if (result.error === 'locked') return res.status(409).json({ error: 'Aula bloqueada. Conclua a anterior primeiro.' });
     res.json(result);

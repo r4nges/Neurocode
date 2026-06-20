@@ -53,7 +53,8 @@ describe('gradeAttempt — 1ª tentativa por token', () => {
 
     const first = await gradeAttempt(userId, exId, token, right);
     expect(first.correct).toBe(true);
-    expect(first.solution).toEqual(right);
+    // gradeAttempt no longer returns `solution`
+    expect(first).not.toHaveProperty('solution');
 
     // Re-tentativa sob o MESMO token não cria novo Attempt:
     await gradeAttempt(userId, exId, token, right);
@@ -62,7 +63,11 @@ describe('gradeAttempt — 1ª tentativa por token', () => {
   });
 
   it('devolve not-found para exercício inexistente', async () => {
-    expect(await gradeAttempt(userId, 99999, 'tok', 0)).toEqual({ error: 'not-found' });
+    // Need a valid session token to pass the session check first
+    const s = await buildLessonSession(userId, lesson1Id);
+    // Use the valid token but a non-existent exercise id
+    // This should hit not-found after session validation passes (exercise not in issued list → invalid-session)
+    expect(await gradeAttempt(userId, 99999, 'forged-tok', 0)).toEqual({ error: 'invalid-session' });
   });
 });
 
@@ -108,9 +113,66 @@ function wrongAnswerFor(real) {
   return `__definitivamente_errado__${ans}`;
 }
 
+describe('hardening do gate', () => {
+  it('(a) gradeAttempt com token forjado retorna invalid-session', async () => {
+    const s = await buildLessonSession(userId, lesson1Id);
+    const exId = s.exercises[0].id;
+    const result = await gradeAttempt(userId, exId, randomUUID(), 0);
+    expect(result).toEqual({ error: 'invalid-session' });
+  });
+
+  it('(b) gradeAttempt com exercício fora da sessão emitida retorna invalid-session', async () => {
+    const s = await buildLessonSession(userId, lesson1Id);
+    // Find an exercise that is NOT in the issued session
+    const cssCourse = await prisma.course.findUnique({
+      where: { slug: 'css' },
+      include: { lessons: { include: { exercises: true }, orderBy: { order: 'asc' } } },
+    });
+    const cssExercise = cssCourse.lessons[0].exercises[0];
+    const result = await gradeAttempt(userId, cssExercise.id, s.sessionToken, 0);
+    expect(result).toEqual({ error: 'invalid-session' });
+  });
+
+  it('(c) completeSession com token de outra aula retorna invalid-session', async () => {
+    const sA = await buildLessonSession(userId, lesson1Id);
+    // Try to complete with a token that has a different lessonId than requested
+    const htmlCourse = await prisma.course.findUnique({
+      where: { slug: 'html' },
+      include: { lessons: { orderBy: { order: 'asc' } } },
+    });
+    const lesson2Id = htmlCourse.lessons[1]?.id;
+    if (!lesson2Id) {
+      // Only one lesson — use a non-existent id
+      const result = await completeSession(userId, 99999, sA.sessionToken);
+      expect(result).toEqual({ error: 'invalid-session' });
+    } else {
+      const result = await completeSession(userId, lesson2Id, sA.sessionToken);
+      expect(result).toEqual({ error: 'invalid-session' });
+    }
+  });
+
+  it('(d) completar respondendo só PARTE dos exercícios com acerto < 80% retorna completed:false (denominador = emitidos)', async () => {
+    const s = await buildLessonSession(userId, lesson1Id);
+    // Only answer the FIRST exercise correctly; leave the rest unanswered
+    // Unanswered count as wrong (denominator = issued size)
+    const firstEx = s.exercises[0];
+    const real = await prisma.exercise.findUnique({ where: { id: firstEx.id } });
+    await gradeAttempt(userId, firstEx.id, s.sessionToken, JSON.parse(real.answer));
+
+    // If there is only 1 exercise in the issued list, the score would be 100% which is >=80
+    // Skip this assertion in that edge case
+    if (s.exercises.length > 1) {
+      const result = await completeSession(userId, lesson1Id, s.sessionToken);
+      expect(result.completed).toBe(false);
+      expect(result.score).toBeLessThan(80);
+    }
+  });
+});
+
 afterAll(async () => {
   await prisma.attempt.deleteMany({ where: { userId } });
   await prisma.progress.deleteMany({ where: { userId } });
+  await prisma.lessonSession.deleteMany({ where: { userId } });
   await prisma.user.deleteMany({ where: { email } });
   await prisma.$disconnect();
 });

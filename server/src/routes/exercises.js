@@ -11,6 +11,8 @@ router.post('/exercises/:id/attempt', requireAuth, verifyCsrf, async (req, res, 
     if (!Number.isInteger(id)) return res.status(400).json({ error: 'Id inválido.' });
     const { sessionToken, answer } = req.body ?? {};
     const result = await gradeAttempt(req.user.id, id, sessionToken, answer);
+    if (result.error === 'invalid-session') return res.status(403).json({ error: 'Sessão inválida.' });
+    if (result.error === 'locked') return res.status(409).json({ error: 'Aula bloqueada. Conclua a anterior primeiro.' });
     if (result.error === 'not-found') return res.status(404).json({ error: 'Exercício não encontrado.' });
     res.json(result);
   } catch (e) {

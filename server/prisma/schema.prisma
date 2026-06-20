@@ -8,21 +8,22 @@ datasource db {
 }
 
 model User {
-  id             Int        @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   name           String
-  email          String     @unique
+  email          String          @unique
   passwordHash   String
-  plan           String     @default("free")
-  xp             Int        @default(0)
-  level          Int        @default(1)
-  neuroPoints    Int        @default(0)
-  streak         Int        @default(0)
+  plan           String          @default("free")
+  xp             Int             @default(0)
+  level          Int             @default(1)
+  neuroPoints    Int             @default(0)
+  streak         Int             @default(0)
   lastActiveDate DateTime?
   onboardedAt    DateTime?
-  createdAt      DateTime   @default(now())
+  createdAt      DateTime        @default(now())
   sessions       Session[]
   progress       Progress[]
   attempts       Attempt[]
+  lessonSessions LessonSession[]
 }
 
 model Session {
@@ -110,4 +111,13 @@ model Attempt {
 
   @@index([userId])
   @@index([userId, sessionToken])
+}
+
+model LessonSession {
+  token       String   @id
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId    Int
+  exerciseIds String   // JSON array dos ids dos exercícios emitidos
+  createdAt   DateTime @default(now())
 }
