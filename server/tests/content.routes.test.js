@@ -61,31 +61,55 @@ describe('Leitura de conteúdo (autenticado)', () => {
   });
 });
 
-describe('Conclusão de aula', () => {
-  it('exige CSRF, conclui a aula disponível e libera a próxima', async () => {
+describe('Sessão e conclusão de aula', () => {
+  it('GET /session monta sessão sem answer; conclui com 100%', async () => {
     const { agent, csrf } = await authedAgent();
-    const [first, second] = await htmlLessonIds();
+    const [first] = await htmlLessonIds();
 
-    const noCsrf = await request(app).post(`/api/lessons/${first}/complete`).send({});
-    expect(noCsrf.status).toBe(401); // sem sessão nem CSRF
+    const sess = await agent.get(`/api/lessons/${first}/session`);
+    expect(sess.status).toBe(200);
+    expect(Array.isArray(sess.body.exercises)).toBe(true);
+    for (const ex of sess.body.exercises) expect(ex).not.toHaveProperty('answer');
+    const token = sess.body.sessionToken;
 
-    const ok = await agent.post(`/api/lessons/${first}/complete`).set('x-csrf-token', csrf).send({});
-    expect(ok.status).toBe(200);
-    expect(ok.body).toMatchObject({ ok: true, nextLessonId: second, courseCompleted: false });
+    // Responde tudo certo (busca o answer real no banco — server-side, é teste).
+    const prisma = (await import('../src/db/client.js')).default;
+    for (const ex of sess.body.exercises) {
+      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      const att = await agent.post(`/api/exercises/${ex.id}/attempt`)
+        .set('x-csrf-token', csrf)
+        .send({ sessionToken: token, answer: JSON.parse(real.answer) });
+      expect(att.status).toBe(200);
+      expect(att.body.correct).toBe(true);
+    }
+
+    const done = await agent.post(`/api/lessons/${first}/complete`)
+      .set('x-csrf-token', csrf)
+      .send({ sessionToken: token });
+    expect(done.status).toBe(200);
+    expect(done.body.completed).toBe(true);
+    expect(done.body.score).toBeGreaterThanOrEqual(80);
   });
 
-  it('409 ao tentar concluir uma aula bloqueada', async () => {
-    const { agent, csrf } = await authedAgent();
+  it('401 sem sessão em GET /session e POST /attempt', async () => {
     const ids = await htmlLessonIds();
-    const blocked = await agent.post(`/api/lessons/${ids[2]}/complete`).set('x-csrf-token', csrf).send({});
-    expect(blocked.status).toBe(409);
-    expect(blocked.body.error).toBe('Aula bloqueada. Conclua a anterior primeiro.');
+    expect((await request(app).get(`/api/lessons/${ids[0]}/session`)).status).toBe(401);
+    expect((await request(app).post(`/api/exercises/${ids[0]}/attempt`).send({})).status).toBe(401);
+  });
+
+  it('409 ao montar sessão de aula bloqueada', async () => {
+    const { agent } = await authedAgent();
+    const css = await agent.get('/api/courses/css');
+    const lockedLessonId = css.body.course.lessons[0].id;
+    const res = await agent.get(`/api/lessons/${lockedLessonId}/session`);
+    expect(res.status).toBe(409);
   });
 });
 
 afterAll(async () => {
   const users = await prisma.user.findMany({ where: { email: { in: createdEmails } } });
   for (const user of users) {
+    await prisma.attempt.deleteMany({ where: { userId: user.id } });
     await prisma.progress.deleteMany({ where: { userId: user.id } });
     await prisma.user.delete({ where: { id: user.id } });
   }

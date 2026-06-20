@@ -146,25 +146,3 @@ export async function getLesson(id, userId) {
   };
 }
 
-export async function completeLesson(userId, lessonId) {
-  const lesson = await prisma.lesson.findUnique({
-    where: { id: lessonId },
-    include: { course: { include: { roadmap: true, lessons: { orderBy: { order: 'asc' } } } } },
-  });
-  if (!lesson) return { error: 'not-found' };
-  const st = await deriveCourseState(lesson.course, userId);
-  if (st.status.get(lesson.id) === 'locked') return { error: 'locked' };
-
-  await prisma.progress.upsert({
-    where: { userId_lessonId: { userId, lessonId } },
-    update: { status: 'completed', completedAt: new Date() },
-    create: { userId, lessonId, status: 'completed' },
-  });
-
-  const siblings = lesson.course.lessons;
-  const idx = siblings.findIndex((l) => l.id === lessonId);
-  const nextLessonId = idx + 1 < siblings.length ? siblings[idx + 1].id : null;
-  const done = await completedLessonIds(userId, siblings.map((l) => l.id));
-  const courseCompleted = siblings.length > 0 && done.size === siblings.length;
-  return { ok: true, nextLessonId, courseCompleted };
-}

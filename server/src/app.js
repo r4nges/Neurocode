@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import healthRouter from './routes/health.js';
 import authRouter from './routes/auth.js';
 import contentRouter from './routes/content.js';
+import exerciseRouter from './routes/exercises.js';
 import { issueCsrfToken } from './middleware/csrf.js';
 import { notFound, errorHandler } from './middleware/error.js';
 
@@ -37,6 +38,7 @@ app.get('/api/csrf', (req, res) => {
 app.use('/api', healthRouter);
 app.use('/api/auth', authRouter);
 app.use('/api', contentRouter);
+app.use('/api', exerciseRouter);
 
 app.use(notFound);
 app.use(errorHandler);
