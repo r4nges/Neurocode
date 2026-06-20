@@ -11,5 +11,6 @@ export default defineConfig({
       NODE_ENV: 'test',
     },
     globalSetup: './tests/global-setup.js',
+    fileParallelism: false,
   },
 });

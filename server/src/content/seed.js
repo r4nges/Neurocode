@@ -1,3 +1,5 @@
+import { seedExercises } from './exercises.js';
+
 // Conteúdo estático da fatia vertical (Fase 3). Blocos de aula:
 //   { type: 'heading', text }       — subtítulo
 //   { type: 'paragraph', text }     — parágrafo de teoria
@@ -186,4 +188,5 @@ export async function seedContent(prisma) {
       });
     }
   }
+  await seedExercises(prisma);
 }
