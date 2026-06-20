@@ -11,6 +11,9 @@ export default defineConfig({
       NODE_ENV: 'test',
     },
     globalSetup: './tests/global-setup.js',
+    // Sequencial por arquivo: os testes compartilham o mesmo SQLite (test.db) e o
+    // seed de exercícios (source:'bank') colide com inserts de outros arquivos no
+    // mesmo conceito. Mais robusto que paralelizar — e mais rápido no Windows.
     fileParallelism: false,
   },
 });

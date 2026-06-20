@@ -173,8 +173,8 @@ export const EXERCISES = [
     prompt: 'Qual método JS seleciona o primeiro elemento que corresponde ao seletor CSS?',
     options: ['getElementById', 'querySelector', 'getElement'], answer: 1 },
   { conceptTag: 'dom', type: 'fill-blank', difficulty: 2,
-    prompt: 'Para mudar o texto de um elemento, acessa-se a propriedade ______Content.',
-    options: [], answer: 'inner' },
+    prompt: 'Para ler ou mudar apenas o texto de um elemento, acessa-se a propriedade ______Content (uma palavra).',
+    options: [], answer: 'text' },
   { conceptTag: 'dom', type: 'multiple-choice', difficulty: 2,
     prompt: 'O que é o DOM?',
     options: [
