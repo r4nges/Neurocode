@@ -8,6 +8,7 @@ import './styles/base.css';
 import './styles/components.css';
 import './styles/landing.css';
 import './styles/auth.css';
+import './styles/roadmap.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

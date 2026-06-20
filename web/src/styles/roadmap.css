@@ -1,0 +1,63 @@
+/* ==========================================================================
+   NeuroCode · Conteúdo (Roadmap / Matéria / Aula)
+   ========================================================================== */
+.rm-page,
+.course-page,
+.lesson-page { padding-top: 32px; padding-bottom: 64px; max-width: 760px; }
+
+.rm-lead { color: var(--c-text-muted); margin-bottom: 24px; }
+.rm-error { color: var(--c-red-soft); }
+
+/* Trilha de matérias */
+.rm-trail { display: flex; flex-direction: column; gap: 14px; margin-bottom: 40px; }
+.rm-trail a { text-decoration: none; color: inherit; }
+.rm-node {
+  display: flex; align-items: center; gap: 16px;
+  background: var(--c-card); border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg); padding: 18px 22px;
+  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.rm-trail a:hover .rm-node { transform: translateY(-2px); border-color: var(--c-purple); }
+.rm-node-glyph {
+  display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0;
+  border-radius: 50%; font-weight: 700; background: var(--grad-brand); color: #fff;
+}
+.rm-node--locked { opacity: 0.55; }
+.rm-node--locked .rm-node-glyph { background: var(--c-card-4); }
+.rm-node--done .rm-node-glyph { background: var(--grad-brand-cyan); }
+.rm-node-info { display: flex; flex-direction: column; }
+.rm-node-sub { color: var(--c-text-muted); font-size: 0.85rem; }
+
+/* Outras carreiras (bloqueadas) */
+.rm-careers-title { font-size: 1.1rem; margin-bottom: 14px; }
+.rm-careers { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.rm-career { padding: 18px; opacity: 0.7; }
+.rm-career p { color: var(--c-text-muted); font-size: 0.88rem; margin: 8px 0 12px; }
+
+/* Matéria */
+.course-back { color: var(--c-text-muted); text-decoration: none; font-size: 0.9rem; }
+.course-lessons { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+.course-lessons a { text-decoration: none; color: inherit; }
+.course-lesson {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--c-card); border: 1px solid var(--c-border);
+  border-radius: var(--radius); padding: 14px 18px;
+}
+.course-lessons a:hover .course-lesson { border-color: var(--c-purple); }
+.course-lesson--locked { opacity: 0.5; }
+.course-lesson--completed .course-lesson-glyph { color: var(--c-green); }
+.course-lesson-glyph { width: 22px; text-align: center; }
+
+/* Aula */
+.lesson-eyebrow { color: var(--c-purple-accent); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.lesson-content { margin: 20px 0 32px; line-height: 1.7; }
+.lesson-content h3 { margin: 22px 0 8px; }
+.lesson-content p { color: var(--c-text); margin: 0 0 12px; }
+.lesson-code {
+  background: #0d0a22; border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm); padding: 16px; overflow-x: auto;
+  font-family: var(--font-mono); font-size: 0.86rem; color: #d6d3ff;
+}
+.lesson-list { margin: 0 0 12px; padding-left: 22px; color: var(--c-text-muted); }
+.lesson-list li { margin-bottom: 6px; }
+.lesson-cta { margin-top: 12px; }
