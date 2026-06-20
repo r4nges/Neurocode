@@ -9,8 +9,13 @@ Rode os comandos **um por linha** (funciona em bash, CMD e PowerShell — sem de
 npm run setup
 cd server
 npx prisma migrate dev --name init
+npm run seed
 cd ..
 ```
+
+> O `npm run seed` popula o roadmap **Desenvolvedor Front-end** (HTML → CSS → JavaScript,
+> 3 aulas cada) e marca DevOps/Back-end/Data como bloqueados. O conteúdo só aparece nas
+> telas após executar este passo. Rodar novamente é seguro — o seed é idempotente.
 
 ### Segredo de sessão (auth)
 Copie `server/.env.example` para `server/.env` e defina um `SESSION_SECRET` forte

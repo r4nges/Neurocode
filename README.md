@@ -52,11 +52,28 @@ roxo/ciano e os design tokens originais).
 
 ## ▶️ Como rodar
 
-### Opção 1 — só abrir (estático)
+> **Protótipo Node/React (atual):** veja [GETTING-STARTED.md](GETTING-STARTED.md) para o
+> guia completo. O trecho abaixo resume apenas o setup do servidor.
+
+### Servidor (API :4000)
+
+```bash
+cd server
+npm install
+npx prisma migrate dev      # cria/atualiza o banco
+npm run seed                # semeia o roadmap Front-end (HTML/CSS/JS)
+npm run dev
+```
+
+O seed popula 1 roadmap **Desenvolvedor Front-end** (matérias HTML → CSS → JavaScript,
+3 aulas cada) e 3 carreiras bloqueadas (DevOps, Back-end, Data). As telas de
+roadmap/matéria/aula exigem login.
+
+### Opção legada — só abrir (estático, Flask)
 Abra `index.html` no navegador. **Tudo funciona** (cursos, NeuroBot e formulário usam
 dados locais como *fallback*).
 
-### Opção 2 — com o backend Python (recomendado)
+### Opção legada — com o backend Python
 Liga a API "conectiva" (cursos via JSON, NeuroBot e inscrições no servidor):
 
 ```bash
@@ -65,7 +82,7 @@ python app.py
 # abra http://127.0.0.1:5000
 ```
 
-> Dica: para o tema/JS carregarem sem CORS, prefira a Opção 2 ou um servidor simples
+> Dica: para o tema/JS carregarem sem CORS, prefira a Opção legada 2 ou um servidor simples
 > (`python -m http.server`).
 
 ## 🔌 API
