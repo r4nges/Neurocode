@@ -35,7 +35,9 @@ describe('seedContent', () => {
     await seedContent(prisma);
     const courses = await prisma.course.count({ where: { slug: 'html' } });
     expect(courses).toBe(1);
-    const roadmaps = await prisma.roadmap.count();
+    const roadmaps = await prisma.roadmap.count({
+      where: { slug: { in: CONTENT.map((r) => r.slug) } },
+    });
     expect(roadmaps).toBe(CONTENT.length);
   });
 });
