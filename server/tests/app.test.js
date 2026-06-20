@@ -9,10 +9,10 @@ describe('App endurecido', () => {
     expect(res.body).toEqual({ status: 'ok' });
   });
 
-  it('responde 401 sem sessão em rota de conteúdo desconhecida', async () => {
-    // O content router aplica requireAuth antes do notFound; sem sessão → 401.
+  it('responde 404 em JSON para rota desconhecida', async () => {
     const res = await request(app).get('/api/nao-existe');
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(404);
+    expect(res.body).toEqual({ error: 'Recurso não encontrado.' });
   });
 
   it('aplica cabeçalhos de segurança do helmet', async () => {

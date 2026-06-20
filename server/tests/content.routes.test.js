@@ -1,12 +1,11 @@
-import { describe, it, expect, afterAll, beforeAll } from 'vitest';
+import { describe, it, expect, afterAll } from 'vitest';
 import request from 'supertest';
 import { randomUUID } from 'node:crypto';
 import app from '../src/app.js';
 import prisma from '../src/db/client.js';
 
 const password = 'Sup3rSecret';
-const email = `route-${randomUUID()}@neurocode.dev`;
-const createdEmails = [email];
+const createdEmails = [];
 
 // Agent autenticado: registra um usuário único e guarda o token CSRF.
 async function authedAgent(uniqueEmail = `route-${randomUUID()}@neurocode.dev`) {

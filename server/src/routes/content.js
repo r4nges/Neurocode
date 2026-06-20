@@ -11,10 +11,7 @@ import {
 
 const router = Router();
 
-// Todo o conteúdo exige sessão.
-router.use(requireAuth);
-
-router.get('/roadmaps', async (req, res, next) => {
+router.get('/roadmaps', requireAuth, async (req, res, next) => {
   try {
     res.json({ roadmaps: await listRoadmaps() });
   } catch (e) {
@@ -22,7 +19,7 @@ router.get('/roadmaps', async (req, res, next) => {
   }
 });
 
-router.get('/roadmaps/:slug', async (req, res, next) => {
+router.get('/roadmaps/:slug', requireAuth, async (req, res, next) => {
   try {
     const roadmap = await getRoadmap(req.params.slug, req.user.id);
     if (!roadmap) return res.status(404).json({ error: 'Roadmap não encontrado.' });
@@ -32,7 +29,7 @@ router.get('/roadmaps/:slug', async (req, res, next) => {
   }
 });
 
-router.get('/courses/:slug', async (req, res, next) => {
+router.get('/courses/:slug', requireAuth, async (req, res, next) => {
   try {
     const course = await getCourse(req.params.slug, req.user.id);
     if (!course) return res.status(404).json({ error: 'Matéria não encontrada.' });
@@ -42,7 +39,7 @@ router.get('/courses/:slug', async (req, res, next) => {
   }
 });
 
-router.get('/lessons/:id', async (req, res, next) => {
+router.get('/lessons/:id', requireAuth, async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     if (!Number.isInteger(id)) return res.status(400).json({ error: 'Id inválido.' });
@@ -54,7 +51,7 @@ router.get('/lessons/:id', async (req, res, next) => {
   }
 });
 
-router.post('/lessons/:id/complete', verifyCsrf, async (req, res, next) => {
+router.post('/lessons/:id/complete', requireAuth, verifyCsrf, async (req, res, next) => {
   try {
     const id = Number(req.params.id);
     if (!Number.isInteger(id)) return res.status(400).json({ error: 'Id inválido.' });
