@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header.jsx';
 import LessonContent from '../components/LessonContent.jsx';
-import { apiGet } from '../lib/api.js';
+import { apiGet, apiPost } from '../lib/api.js';
 
 export default function Lesson() {
   const { id } = useParams();
@@ -18,21 +18,17 @@ export default function Lesson() {
       .catch((e) => setError(e.message));
   }, [id]);
 
-  function concluir() {
+  async function concluir() {
     setSaving(true);
-    fetch(`/api/lessons/${id}/complete`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({}),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.nextLessonId) navigate(`/aula/${data.nextLessonId}`);
-        else navigate(`/curso/${lesson.courseSlug}`);
-      })
-      .catch((e) => setError(e.message))
-      .finally(() => setSaving(false));
+    try {
+      const res = await apiPost(`/lessons/${id}/complete`, {});
+      if (res.nextLessonId) navigate(`/aula/${res.nextLessonId}`);
+      else navigate(`/curso/${lesson.courseSlug}`);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSaving(false);
+    }
   }
 
   return (

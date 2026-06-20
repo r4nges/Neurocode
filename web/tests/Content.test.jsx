@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from '../src/App.jsx';
 import { AuthProvider } from '../src/context/AuthContext.jsx';
@@ -38,6 +38,7 @@ function mockApi() {
     if (url.endsWith('/api/roadmaps/desenvolvedor-front-end')) return ok({ roadmap: roadmapFE });
     if (url.endsWith('/api/roadmaps')) return ok({ roadmaps: [{ slug: 'desenvolvedor-front-end', title: 'Desenvolvedor Front-end', description: 'x', icon: 'Code2', isLocked: false, order: 1 }, { slug: 'devops', title: 'DevOps', description: 'em breve', icon: 'Server', isLocked: true, order: 2 }] });
     if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, nextLessonId: 2, courseCompleted: false });
+    if (url.endsWith('/api/lessons/2')) return ok({ lesson: { id: 2, title: 'Tags e estrutura', order: 2, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: [], content: [{ type: 'paragraph', text: 'segunda aula carregada' }] } });
     if (url.endsWith('/api/lessons/1')) return ok({ lesson: lesson1 });
     return ok({});
   });
@@ -59,10 +60,17 @@ describe('Tela de Aula', () => {
     renderAt('/aula/1');
     expect(await screen.findByText('Uma página mínima')).toBeInTheDocument();
     fireEvent.click(await screen.findByRole('button', { name: /concluir aula/i }));
-    // Após concluir, navega para a próxima aula (id 2): a chamada de complete foi disparada.
-    expect(global.fetch).toHaveBeenCalledWith(
-      expect.stringContaining('/api/lessons/1/complete'),
-      expect.objectContaining({ method: 'POST' })
+    // Após concluir, navega para a próxima aula (id 2) e a renderiza:
+    expect(await screen.findByText('segunda aula carregada')).toBeInTheDocument();
+    // E o POST de conclusão foi disparado COM o header CSRF (via apiPost):
+    await waitFor(() =>
+      expect(global.fetch).toHaveBeenCalledWith(
+        expect.stringContaining('/api/lessons/1/complete'),
+        expect.objectContaining({
+          method: 'POST',
+          headers: expect.objectContaining({ 'X-CSRF-Token': expect.any(String) }),
+        })
+      )
     );
   });
 });
