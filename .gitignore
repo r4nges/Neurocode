@@ -30,6 +30,9 @@ dev.db
 # ---- Config local do editor / Claude ----
 .claude/settings.local.json
 
+# ---- Scratch de workflow (subagent-driven-development) ----
+.superpowers/
+
 # ---- SO ----
 .DS_Store
 Thumbs.db
