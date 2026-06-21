@@ -12,7 +12,7 @@ async function onboardingExercises() {
   const out = [];
   for (const slug of slugs) {
     const ex = await prisma.exercise.findFirst({
-      where: { difficulty: 1, lesson: { course: { slug } } },
+      where: { difficulty: 1, type: 'multiple-choice', lesson: { course: { slug } } },
       orderBy: { id: 'asc' },
     });
     if (ex) out.push(ex);

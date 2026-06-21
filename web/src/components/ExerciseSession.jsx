@@ -6,7 +6,7 @@ export default function ExerciseSession({ lessonId, onDone }) {
   const [session, setSession] = useState(null);
   const [queue, setQueue] = useState([]);     // exercícios restantes (re-enfileira erro)
   const [error, setError] = useState(null);
-  const [feedback, setFeedback] = useState(null); // { correct, solution }
+  const [feedback, setFeedback] = useState(null); // { correct }
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState(null); // resultado da conclusão
   const [doneCount, setDoneCount] = useState(0);
