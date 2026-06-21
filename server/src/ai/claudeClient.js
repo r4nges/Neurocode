@@ -32,7 +32,7 @@ export function validateExercise(obj, { concept, difficulty }) {
   if (typeof obj.prompt !== 'string' || !obj.prompt.trim()) return null;
   if (!Array.isArray(obj.options)) return null;
   if (obj.answer === undefined || obj.answer === null) return null;
-  const diff = Number(obj.difficulty) || difficulty;
+  const diff = obj.difficulty != null ? Number(obj.difficulty) : difficulty;
   if (!Number.isInteger(diff) || diff < 1 || diff > 3) return null;
   return {
     type: obj.type,
@@ -98,7 +98,12 @@ export async function maybeGenerate({ concepts, mastery, pool }) {
     const rec = await generateExercise({ concept, difficulty: targetDifficulty, fewShot });
     if (!rec) continue;
     const lessonId = pool.find((e) => e.conceptTag === concept)?.lessonId;
-    const created = await prisma.exercise.create({ data: { ...rec, lessonId: lessonId ?? null } });
+    let created;
+    try {
+      created = await prisma.exercise.create({ data: { ...rec, lessonId: lessonId ?? null } });
+    } catch {
+      continue; // falha de cache: degrada para o banco, tenta o próximo conceito
+    }
     return [...pool, created];
   }
   return pool;

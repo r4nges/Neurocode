@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
+import { describe, it, expect, vi, afterEach } from 'vitest';
 import { validateExercise, aiEnabled, maybeGenerate } from '../src/ai/claudeClient.js';
 
 afterEach(() => {
@@ -25,6 +25,7 @@ describe('validateExercise (puro)', () => {
     expect(validateExercise({ ...base, options: 'naoarray' }, { concept: 'c', difficulty: 1 })).toBeNull();
     expect(validateExercise({ ...base, difficulty: 9 }, { concept: 'c', difficulty: 9 })).toBeNull();
     expect(validateExercise(null, { concept: 'c', difficulty: 1 })).toBeNull();
+    expect(validateExercise({ ...base, difficulty: 0 }, { concept: 'c', difficulty: 0 })).toBeNull();
   });
 });
 
