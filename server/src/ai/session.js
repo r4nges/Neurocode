@@ -41,7 +41,9 @@ export async function buildLessonSession(userId, lessonId) {
   return { ok: true, sessionToken, lessonTitle: view.title, courseSlug: view.courseSlug, exercises };
 }
 
-// Corrige uma resposta. Grava Attempt só na 1ª vez do exercício sob o token.
+// Corrige uma resposta. Grava Attempt na 1ª vez do exercício sob o token e, se já existia
+// como erro, promove para correct no reacerto (a UI re-enfileira até acertar; a pontuação de
+// conclusão deve refletir o domínio alcançado). Nunca rebaixa um acerto já registrado.
 // Valida que o token é uma sessão emitida pelo servidor, pertence ao usuário e contém o exercício.
 export async function gradeAttempt(userId, exerciseId, sessionToken, submitted) {
   const ls = sessionToken ? await prisma.lessonSession.findUnique({ where: { token: sessionToken } }) : null;
@@ -56,6 +58,8 @@ export async function gradeAttempt(userId, exerciseId, sessionToken, submitted) 
   const existing = await prisma.attempt.findFirst({ where: { userId, exerciseId, sessionToken } });
   if (!existing) {
     await prisma.attempt.create({ data: { userId, exerciseId, correct, sessionToken } });
+  } else if (!existing.correct && correct) {
+    await prisma.attempt.update({ where: { id: existing.id }, data: { correct: true } });
   }
   return { correct };
 }
@@ -82,12 +86,13 @@ export async function completeSession(userId, lessonId, sessionToken) {
   }
 
   // Caminho de sucesso: tudo numa transação (best-score + recompensa + invalidação do token).
-  const prev = await prisma.progress.findUnique({
-    where: { userId_lessonId: { userId, lessonId } }, select: { score: true },
-  });
-  const prevBest = prev?.score ?? 0;
-
+  // prevBest é lido DENTRO da transação para que o delta de XP reflita o estado já commitado
+  // de uma conclusão concorrente (ex.: a mesma aula aberta em dois tokens) e não conceda XP em dobro.
   const reward = await prisma.$transaction(async (tx) => {
+    const prev = await tx.progress.findUnique({
+      where: { userId_lessonId: { userId, lessonId } }, select: { score: true },
+    });
+    const prevBest = prev?.score ?? 0;
     await tx.progress.upsert({
       where: { userId_lessonId: { userId, lessonId } },
       update: { status: 'completed', score: Math.max(prevBest, score), completedAt: new Date() },

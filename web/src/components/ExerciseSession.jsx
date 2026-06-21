@@ -59,9 +59,9 @@ export default function ExerciseSession({ lessonId, onDone }) {
         {result.completed
           ? <p className="ex-pass">✓ Aula concluída — {result.score}% de acerto!</p>
           : <p className="ex-fail">Você fez {result.score}%. São necessários 80% — refaça para concluir.</p>}
-        {result.completed && result.xpAwarded != null && (
+        {result.completed && result.streak != null && (
           <div className="ex-reward">
-            <p className="reward-xp">+{result.xpAwarded} XP</p>
+            {result.xpAwarded > 0 && <p className="reward-xp">+{result.xpAwarded} XP</p>}
             {result.leveledUp && <p className="reward-level">⬆️ Subiu para o nível {result.level}!</p>}
             <p className="reward-streak">🔥 Streak: {result.streak} dia(s)</p>
             {result.badge && (

@@ -19,7 +19,9 @@ export default function Ranking() {
         {error && <p className="rm-error">{error}</p>}
         {data && (
           <>
-            <p className="rank-me">Sua posição: <b>#{data.me.rank}</b> · {data.me.xp} XP · Nível {data.me.level}</p>
+            {data.me && (
+              <p className="rank-me">Sua posição: <b>#{data.me.rank}</b> · {data.me.xp} XP · Nível {data.me.level}</p>
+            )}
             <ol className="rank-list">
               {data.top.map((u, i) => (
                 <li key={i} className="rank-row">

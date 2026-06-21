@@ -30,7 +30,7 @@ export async function getDashboard(userId) {
     where: { id: { in: grupos.map((g) => g.userId) } }, select: { id: true, name: true },
   });
   const nomePorId = new Map(nomes.map((u) => [u.id, u.name]));
-  const podium = grupos.map((g) => ({ name: nomePorId.get(g.userId), weeklyXp: g._sum.amount ?? 0 }));
+  const podium = grupos.map((g) => ({ name: nomePorId.get(g.userId) ?? '—', weeklyXp: g._sum.amount ?? 0 }));
 
   // Badges conquistados.
   const badgeRows = await prisma.badge.findMany({
@@ -57,6 +57,7 @@ export async function getRanking(userId) {
   const me = await prisma.user.findUnique({
     where: { id: userId }, select: { xp: true, level: true },
   });
+  if (!me) return { top: topRows, me: null }; // usuário removido após emitir o token
   const acima = await prisma.user.count({ where: { xp: { gt: me.xp } } });
   return { top: topRows, me: { rank: acima + 1, xp: me.xp, level: me.level } };
 }

@@ -235,6 +235,43 @@ describe('Fase 5 — recompensa + gate não-replayável', () => {
   });
 });
 
+// Achado #2: a UI re-enfileira erros até acertar; o reacerto sob o mesmo token deve
+// promover o Attempt para correct, de modo que limpar a fila => conclusão (não "refaça").
+const retryEmail = `retry-${randomUUID()}@neurocode.dev`;
+let retryUserId;
+
+describe('reacerto na mesma sessão promove o Attempt (gate = limpar a fila)', () => {
+  beforeAll(async () => {
+    const u = await prisma.user.create({ data: { name: 'Retry', email: retryEmail, passwordHash: 'x' } });
+    retryUserId = u.id;
+  });
+
+  it('errar e depois acertar cada exercício conclui a aula com 100%', async () => {
+    const s = await buildLessonSession(retryUserId, lesson1Id);
+    for (const ex of s.exercises) {
+      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      await gradeAttempt(retryUserId, ex.id, s.sessionToken, wrongAnswerFor(real)); // 1ª: erro
+      const retry = await gradeAttempt(retryUserId, ex.id, s.sessionToken, JSON.parse(real.answer)); // reacerto
+      expect(retry.correct).toBe(true);
+      // não cria novo Attempt — promove o existente
+      const count = await prisma.attempt.count({
+        where: { userId: retryUserId, exerciseId: ex.id, sessionToken: s.sessionToken },
+      });
+      expect(count).toBe(1);
+    }
+    const r = await completeSession(retryUserId, lesson1Id, s.sessionToken);
+    expect(r.completed).toBe(true);
+    expect(r.score).toBe(100);
+  });
+
+  afterAll(async () => {
+    await prisma.attempt.deleteMany({ where: { userId: retryUserId } });
+    await prisma.progress.deleteMany({ where: { userId: retryUserId } });
+    await prisma.lessonSession.deleteMany({ where: { userId: retryUserId } });
+    await prisma.user.deleteMany({ where: { email: retryEmail } });
+  });
+});
+
 afterAll(async () => {
   await prisma.attempt.deleteMany({ where: { userId } });
   await prisma.progress.deleteMany({ where: { userId } });
