@@ -37,7 +37,12 @@ function mockApi() {
     if (url.endsWith('/api/csrf')) return ok({ csrfToken: 't' });
     if (url.endsWith('/api/roadmaps/desenvolvedor-front-end')) return ok({ roadmap: roadmapFE });
     if (url.endsWith('/api/roadmaps')) return ok({ roadmaps: [{ slug: 'desenvolvedor-front-end', title: 'Desenvolvedor Front-end', description: 'x', icon: 'Code2', isLocked: false, order: 1 }, { slug: 'devops', title: 'DevOps', description: 'em breve', icon: 'Server', isLocked: true, order: 2 }] });
-    if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, nextLessonId: 2, courseCompleted: false });
+    if (url.endsWith('/api/lessons/1/session')) return ok({
+      ok: true, sessionToken: 'tok', lessonTitle: 'O que é HTML', courseSlug: 'html',
+      exercises: [{ id: 10, type: 'multiple-choice', prompt: 'Qual cria link?', options: ['<p>', '<a>'], difficulty: 1, conceptTag: 'tags' }],
+    });
+    if (url.endsWith('/api/exercises/10/attempt')) return ok({ correct: true, solution: 1 });
+    if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, courseCompleted: false });
     if (url.endsWith('/api/lessons/2')) return ok({ lesson: { id: 2, title: 'Tags e estrutura', order: 2, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: [], content: [{ type: 'paragraph', text: 'segunda aula carregada' }] } });
     if (url.endsWith('/api/lessons/1')) return ok({ lesson: lesson1 });
     return ok({});
@@ -55,21 +60,26 @@ describe('Tela de Roadmap', () => {
   });
 });
 
-describe('Tela de Aula', () => {
-  it('renderiza a teoria e conclui a aula', async () => {
+describe('Tela de Aula — sessão de exercícios', () => {
+  it('mostra a teoria, inicia a sessão e conclui com aprovação', async () => {
     renderAt('/aula/1');
+    // teoria primeiro
     expect(await screen.findByText('Uma página mínima')).toBeInTheDocument();
-    fireEvent.click(await screen.findByRole('button', { name: /concluir aula/i }));
-    // Após concluir, navega para a próxima aula (id 2) e a renderiza:
-    expect(await screen.findByText('segunda aula carregada')).toBeInTheDocument();
-    // E o POST de conclusão foi disparado COM o header CSRF (via apiPost):
+    // inicia a sessão
+    fireEvent.click(await screen.findByRole('button', { name: /começar exercícios/i }));
+    // o exercício aparece
+    expect(await screen.findByText('Qual cria link?')).toBeInTheDocument();
+    // escolhe a alternativa correta e verifica
+    fireEvent.click(await screen.findByRole('button', { name: '<a>' }));
+    fireEvent.click(await screen.findByRole('button', { name: /verificar/i }));
+    // feedback de acerto e avançar -> conclui -> resultado de aprovação
+    fireEvent.click(await screen.findByRole('button', { name: /continuar/i }));
+    expect(await screen.findByText(/aula concluída/i)).toBeInTheDocument();
+    // o attempt foi enviado com CSRF (via apiPost):
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/lessons/1/complete'),
-        expect.objectContaining({
-          method: 'POST',
-          headers: expect.objectContaining({ 'X-CSRF-Token': expect.any(String) }),
-        })
+        expect.stringContaining('/api/exercises/10/attempt'),
+        expect.objectContaining({ method: 'POST', headers: expect.objectContaining({ 'X-CSRF-Token': expect.any(String) }) })
       )
     );
   });
