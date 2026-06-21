@@ -56,6 +56,7 @@ describe('Cadastro', () => {
     fireEvent.change(screen.getByLabelText(/e-mail/i), { target: { value: 'r@neuro.dev' } });
     fireEvent.change(screen.getByLabelText(/senha/i), { target: { value: 'Sup3rSecret' } });
     fireEvent.click(screen.getByRole('button', { name: /criar conta/i }));
-    expect(await screen.findByRole('heading', { name: /dashboard/i })).toBeInTheDocument();
+    // o Dashboard saúda o usuário pelo nome (heading "Olá, <nome>")
+    expect(await screen.findByRole('heading', { name: /olá, rangel/i })).toBeInTheDocument();
   });
 });

@@ -13,7 +13,7 @@ export default function Dashboard() {
     apiGet('/dashboard').then(setData).catch((e) => setError(e.message));
   }, []);
 
-  const pct = data ? Math.min(100, Math.round((data.weekly.earned / data.weekly.goal) * 100)) : 0;
+  const pct = data?.weekly ? Math.min(100, Math.round((data.weekly.earned / data.weekly.goal) * 100)) : 0;
 
   return (
     <>
@@ -21,7 +21,7 @@ export default function Dashboard() {
       <main className="container">
         <h1>Olá, {user?.name}</h1>
         {error && <p className="rm-error">{error}</p>}
-        {data && (
+        {data?.weekly && (
           <section className="dash-progress card">
             <h2>Seu progresso</h2>
             <ul className="dash-stats">
