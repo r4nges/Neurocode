@@ -38,6 +38,7 @@ npm run dev
 O Vite faz proxy de `/api` para a API, então o front fala com o back sem CORS.
 
 - Auth: `POST /api/auth/register` · `POST /api/auth/login` · `POST /api/auth/logout` · `GET /api/auth/me` (sessão por cookie httpOnly; CSRF via header `X-CSRF-Token`).
+- Gamificação (**Fase 5**): concluir uma aula com **≥80%** de acerto concede **XP** (só o *delta* de melhora — refazer não farma), sobe de **nível** a cada 250 XP, alimenta o **streak** diário e, ao fechar a matéria inteira, libera um **badge** + **NeuroPoints**. Tudo calculado no servidor, numa transação, com o token da sessão invalidado após a conclusão. Leitura: `GET /api/dashboard` (painel "Seu progresso": XP/nível/streak/NeuroPoints + meta semanal + pódio + badges) e `GET /api/ranking` (leaderboard global por XP + sua posição). No app: painel no **Dashboard**, resumo de recompensa ao fim da aula e a página **/ranking**.
 
 ## Rodar os testes
 ```bash

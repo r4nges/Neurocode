@@ -72,6 +72,14 @@ conceito e dificuldade). Para ligar a geração ao vivo via Claude, copie
 `server/.env.example` → `server/.env` e preencha `CLAUDE_API_KEY` (opcional — sem a
 chave o app roda 100% com o banco embutido). As telas de roadmap/matéria/aula exigem login.
 
+A partir da **Fase 5 (gamificação)**, concluir uma aula com **≥80%** de acerto concede
+**XP** (só o *delta* de melhora — anti-farming), sobe de **nível** (250 XP/nível), alimenta
+o **streak** diário e, ao fechar a matéria, libera **badge** + **NeuroPoints**. A recompensa
+é server-autoritativa (transação) e o token da sessão é invalidado após a conclusão. Rotas
+de leitura: `GET /api/dashboard` (painel "Seu progresso" + meta semanal + pódio + badges) e
+`GET /api/ranking` (leaderboard global por XP). No app: painel no Dashboard, resumo de
+recompensa ao fim da aula e a página `/ranking`.
+
 ### Opção legada — só abrir (estático, Flask)
 Abra `index.html` no navegador. **Tudo funciona** (cursos, NeuroBot e formulário usam
 dados locais como *fallback*).
