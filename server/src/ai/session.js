@@ -6,6 +6,7 @@ import { buildSession } from './selector.js';
 import { poolForConcepts, attemptsForUser } from './bank.js';
 import { getLesson } from '../content/service.js';
 import { maybeGenerate } from './claudeClient.js';
+import { awardOnCompletion } from '../gamification/award.js';
 
 const PASS_THRESHOLD = 80;
 
@@ -80,18 +81,31 @@ export async function completeSession(userId, lessonId, sessionToken) {
     return { ok: true, completed: false, score };
   }
 
-  await prisma.progress.upsert({
-    where: { userId_lessonId: { userId, lessonId } },
-    update: { status: 'completed', score, completedAt: new Date() },
-    create: { userId, lessonId, status: 'completed', score },
+  // Caminho de sucesso: tudo numa transação (best-score + recompensa + invalidação do token).
+  const prev = await prisma.progress.findUnique({
+    where: { userId_lessonId: { userId, lessonId } }, select: { score: true },
+  });
+  const prevBest = prev?.score ?? 0;
+
+  const reward = await prisma.$transaction(async (tx) => {
+    await tx.progress.upsert({
+      where: { userId_lessonId: { userId, lessonId } },
+      update: { status: 'completed', score: Math.max(prevBest, score), completedAt: new Date() },
+      create: { userId, lessonId, status: 'completed', score },
+    });
+    const r = await awardOnCompletion(tx, {
+      userId, lessonId, courseSlug: view.courseSlug, prevBest, novoScore: score, now: new Date(),
+    });
+    await tx.lessonSession.delete({ where: { token: sessionToken } }); // gate não-replayável
+    return r;
   });
 
-  const siblings = await prisma.lesson.findMany({
-    where: { course: { slug: view.courseSlug } }, select: { id: true }, orderBy: { order: 'asc' },
-  });
-  const done = await prisma.progress.findMany({
-    where: { userId, lessonId: { in: siblings.map((l) => l.id) }, status: 'completed' }, select: { lessonId: true },
-  });
-  const courseCompleted = siblings.length > 0 && done.length === siblings.length;
-  return { ok: true, completed: true, score, nextLessonId: view.nextLessonId, courseCompleted };
+  return {
+    ok: true, completed: true, score,
+    nextLessonId: view.nextLessonId, courseCompleted: reward.courseCompleted,
+    xpAwarded: reward.xpAwarded, level: reward.level, leveledUp: reward.leveledUp,
+    streak: reward.streak,
+    ...(reward.badge ? { badge: reward.badge } : {}),
+    ...(reward.pointsAwarded ? { pointsAwarded: reward.pointsAwarded } : {}),
+  };
 }

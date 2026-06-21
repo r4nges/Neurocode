@@ -169,10 +169,77 @@ describe('hardening do gate', () => {
   });
 });
 
+// Suíte de recompensa: usuário próprio e fresco (o `userId` global já concluiu
+// lesson1 nos testes de limiar acima, o que zeraria o delta de XP).
+const rewardEmail = `reward-${randomUUID()}@neurocode.dev`;
+let rewardUserId;
+
+describe('Fase 5 — recompensa + gate não-replayável', () => {
+  beforeAll(async () => {
+    const u = await prisma.user.create({ data: { name: 'Reward', email: rewardEmail, passwordHash: 'x' } });
+    rewardUserId = u.id;
+  });
+
+  it('conclusão concede XP e devolve o resumo de recompensa', async () => {
+    const s = await buildLessonSession(rewardUserId, lesson1Id);
+    for (const ex of s.exercises) {
+      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      await gradeAttempt(rewardUserId, ex.id, s.sessionToken, JSON.parse(real.answer));
+    }
+    const r = await completeSession(rewardUserId, lesson1Id, s.sessionToken);
+    expect(r.completed).toBe(true);
+    expect(r.xpAwarded).toBeGreaterThan(0);
+    expect(r.level).toBeGreaterThanOrEqual(1);
+    expect(typeof r.leveledUp).toBe('boolean');
+    expect(r.streak).toBeGreaterThanOrEqual(1);
+  });
+
+  it('o sessionToken fica inválido após a conclusão (não-replayável)', async () => {
+    const s = await buildLessonSession(rewardUserId, lesson1Id);
+    for (const ex of s.exercises) {
+      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      await gradeAttempt(rewardUserId, ex.id, s.sessionToken, JSON.parse(real.answer));
+    }
+    await completeSession(rewardUserId, lesson1Id, s.sessionToken);
+    const gone = await prisma.lessonSession.findUnique({ where: { token: s.sessionToken } });
+    expect(gone).toBeNull();
+    const replay = await completeSession(rewardUserId, lesson1Id, s.sessionToken);
+    expect(replay).toEqual({ error: 'invalid-session' });
+  });
+
+  it('anti-farming: refazer a aula com 100% de novo concede 0 XP', async () => {
+    const before = await prisma.user.findUnique({ where: { id: rewardUserId } });
+    const s = await buildLessonSession(rewardUserId, lesson1Id);
+    for (const ex of s.exercises) {
+      const real = await prisma.exercise.findUnique({ where: { id: ex.id } });
+      await gradeAttempt(rewardUserId, ex.id, s.sessionToken, JSON.parse(real.answer));
+    }
+    const r = await completeSession(rewardUserId, lesson1Id, s.sessionToken);
+    expect(r.xpAwarded).toBe(0); // prevBest já era 100 da conclusão anterior
+    const after = await prisma.user.findUnique({ where: { id: rewardUserId } });
+    expect(after.xp).toBe(before.xp);
+  });
+
+  it('<80% não concede recompensa nem invalida o token', async () => {
+    const s = await buildLessonSession(rewardUserId, lesson1Id);
+    if (s.exercises.length > 1) {
+      const first = s.exercises[0];
+      const real = await prisma.exercise.findUnique({ where: { id: first.id } });
+      await gradeAttempt(rewardUserId, first.id, s.sessionToken, JSON.parse(real.answer));
+      const r = await completeSession(rewardUserId, lesson1Id, s.sessionToken);
+      expect(r.completed).toBe(false);
+      expect(r).not.toHaveProperty('xpAwarded');
+      const still = await prisma.lessonSession.findUnique({ where: { token: s.sessionToken } });
+      expect(still).not.toBeNull(); // token preservado
+    }
+  });
+});
+
 afterAll(async () => {
   await prisma.attempt.deleteMany({ where: { userId } });
   await prisma.progress.deleteMany({ where: { userId } });
   await prisma.lessonSession.deleteMany({ where: { userId } });
   await prisma.user.deleteMany({ where: { email } });
+  await prisma.user.deleteMany({ where: { email: rewardEmail } }); // cascade limpa o resto
   await prisma.$disconnect();
 });
