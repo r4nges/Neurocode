@@ -24,6 +24,8 @@ model User {
   progress       Progress[]
   attempts       Attempt[]
   lessonSessions LessonSession[]
+  badges         Badge[]
+  xpEvents       XpEvent[]
 }
 
 model Session {
@@ -57,6 +59,7 @@ model Course {
   badgeIcon    String
   pointsReward Int      @default(0)
   lessons      Lesson[]
+  badges       Badge[]
 }
 
 model Lesson {
@@ -78,6 +81,7 @@ model Progress {
   lessonId    Int
   lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   status      String   @default("completed")
+  // score = MELHOR nota (máximo entre tentativas). A conclusão grava max(prevBest, novoScore).
   score       Int?
   completedAt DateTime @default(now())
 
@@ -120,4 +124,26 @@ model LessonSession {
   lessonId    Int
   exerciseIds String   // JSON array dos ids dos exercícios emitidos
   createdAt   DateTime @default(now())
+}
+
+model Badge {
+  id       Int      @id @default(autoincrement())
+  userId   Int
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courseId Int
+  course   Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  earnedAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+}
+
+model XpEvent {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
 }
