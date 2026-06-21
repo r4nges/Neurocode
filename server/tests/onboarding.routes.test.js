@@ -36,6 +36,11 @@ describe('Onboarding', () => {
     for (const q of res.body.questions) expect(q).not.toHaveProperty('answer');
   });
 
+  it('401 sem sessão em GET /onboarding', async () => {
+    const res = await request(app).get('/api/onboarding');
+    expect(res.status).toBe(401);
+  });
+
   it('POST /onboarding grava tentativas, marca onboardedAt e exige CSRF', async () => {
     const { agent, csrf, email } = await authedAgent();
     const q = (await agent.get('/api/onboarding')).body.questions;
