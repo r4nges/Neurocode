@@ -217,3 +217,18 @@
 }
 .toast.is-show { opacity: 1; translate: -50% 0; }
 .toast svg { color: var(--c-green); width: 20px; height: 20px; flex-shrink: 0; }
+
+/* Fase 5 — gamificação */
+.dash-progress { display: grid; gap: 1rem; margin: 1.5rem 0; }
+.dash-stats { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; padding: 0; }
+.dash-weekly .progress { margin-top: .25rem; }
+.dash-podium ol { margin: .25rem 0 0; padding-left: 1.2rem; }
+.badge-list { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; }
+.dash-empty { color: var(--muted, #888); }
+.dash-actions { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1rem; }
+.ex-reward { display: grid; gap: .25rem; margin: .75rem 0; padding: .75rem 1rem; border-radius: .75rem; background: var(--surface-2, #1c1c22); }
+.reward-xp { font-weight: 700; font-size: 1.25rem; }
+.rank-list { list-style: none; padding: 0; display: grid; gap: .5rem; }
+.rank-row { display: grid; grid-template-columns: 3rem 1fr auto; align-items: center; gap: .75rem; padding: .5rem .75rem; border-radius: .5rem; background: var(--surface-2, #1c1c22); }
+.rank-pos { font-weight: 700; opacity: .8; }
+.rank-me { margin-bottom: 1rem; }

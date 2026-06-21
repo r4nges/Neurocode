@@ -7,6 +7,7 @@ import Roadmap from './pages/Roadmap.jsx';
 import Course from './pages/Course.jsx';
 import Lesson from './pages/Lesson.jsx';
 import Onboarding from './pages/Onboarding.jsx';
+import Ranking from './pages/Ranking.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/curso/:slug" element={<Course />} />
         <Route path="/aula/:id" element={<Lesson />} />
         <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/ranking" element={<Ranking />} />
       </Route>
     </Routes>
   );

@@ -42,7 +42,7 @@ function mockApi() {
       exercises: [{ id: 10, type: 'multiple-choice', prompt: 'Qual cria link?', options: ['<p>', '<a>'], difficulty: 1, conceptTag: 'tags' }],
     });
     if (url.endsWith('/api/exercises/10/attempt')) return ok({ correct: true, solution: 1 });
-    if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, courseCompleted: false });
+    if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, courseCompleted: true, xpAwarded: 100, level: 2, leveledUp: true, streak: 1, badge: { badgeName: 'Estruturador', badgeIcon: 'FileCode' }, pointsAwarded: 100 });
     if (url.endsWith('/api/lessons/2')) return ok({ lesson: { id: 2, title: 'Tags e estrutura', order: 2, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: [], content: [{ type: 'paragraph', text: 'segunda aula carregada' }] } });
     if (url.endsWith('/api/lessons/1')) return ok({ lesson: lesson1 });
     return ok({});
@@ -75,6 +75,9 @@ describe('Tela de Aula — sessão de exercícios', () => {
     // feedback de acerto e avançar -> conclui -> resultado de aprovação
     fireEvent.click(await screen.findByRole('button', { name: /continuar/i }));
     expect(await screen.findByText(/aula concluída/i)).toBeInTheDocument();
+    // resumo de recompensa
+    expect(await screen.findByText(/\+100 XP/)).toBeInTheDocument();
+    expect(await screen.findByText(/Estruturador/)).toBeInTheDocument();
     // o attempt foi enviado com CSRF (via apiPost):
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
