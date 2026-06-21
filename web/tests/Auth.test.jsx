@@ -29,7 +29,7 @@ function mockApi({ me = null } = {}) {
     }
     if (url.endsWith('/api/auth/register')) {
       const body = JSON.parse(opts.body);
-      return Promise.resolve({ ok: true, json: () => Promise.resolve({ user: { id: 1, name: body.name, email: body.email, plan: 'free', xp: 0, level: 1, neuroPoints: 0, streak: 0 } }) });
+      return Promise.resolve({ ok: true, json: () => Promise.resolve({ user: { id: 1, name: body.name, email: body.email, plan: 'free', xp: 0, level: 1, neuroPoints: 0, streak: 0, onboardedAt: new Date().toISOString() } }) });
     }
     return Promise.resolve({ ok: true, json: () => Promise.resolve({}) });
   });

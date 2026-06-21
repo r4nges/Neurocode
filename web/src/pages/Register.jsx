@@ -15,8 +15,8 @@ export default function Register() {
     e.preventDefault();
     setError(null);
     try {
-      await register(name, email, password);
-      navigate('/dashboard');
+      const u = await register(name, email, password);
+      navigate(u?.onboardedAt ? '/dashboard' : '/onboarding');
     } catch (err) {
       setError(err.message);
     }

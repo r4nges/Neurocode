@@ -66,8 +66,11 @@ npm run dev
 ```
 
 O seed popula 1 roadmap **Desenvolvedor Front-end** (matérias HTML → CSS → JavaScript,
-3 aulas cada) e 3 carreiras bloqueadas (DevOps, Back-end, Data). As telas de
-roadmap/matéria/aula exigem login.
+3 aulas cada) e 3 carreiras bloqueadas (DevOps, Back-end, Data). A partir da **Fase 4**,
+o seed também popula o **banco de exercícios** (exercícios adaptativos etiquetados por
+conceito e dificuldade). Para ligar a geração ao vivo via Claude, copie
+`server/.env.example` → `server/.env` e preencha `CLAUDE_API_KEY` (opcional — sem a
+chave o app roda 100% com o banco embutido). As telas de roadmap/matéria/aula exigem login.
 
 ### Opção legada — só abrir (estático, Flask)
 Abra `index.html` no navegador. **Tudo funciona** (cursos, NeuroBot e formulário usam

@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard.jsx';
 import Roadmap from './pages/Roadmap.jsx';
 import Course from './pages/Course.jsx';
 import Lesson from './pages/Lesson.jsx';
+import Onboarding from './pages/Onboarding.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/roadmap" element={<Roadmap />} />
         <Route path="/curso/:slug" element={<Course />} />
         <Route path="/aula/:id" element={<Lesson />} />
+        <Route path="/onboarding" element={<Onboarding />} />
       </Route>
     </Routes>
   );

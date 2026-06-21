@@ -14,8 +14,14 @@ cd ..
 ```
 
 > O `npm run seed` popula o roadmap **Desenvolvedor Front-end** (HTML → CSS → JavaScript,
-> 3 aulas cada) e marca DevOps/Back-end/Data como bloqueados. O conteúdo só aparece nas
-> telas após executar este passo. Rodar novamente é seguro — o seed é idempotente.
+> 3 aulas cada) e marca DevOps/Back-end/Data como bloqueados. A partir da **Fase 4**, o
+> seed também popula o **banco de exercícios** (exercícios de múltipla escolha, fill-blank
+> e outros, etiquetados por conceito e dificuldade) que alimenta o motor adaptativo e o
+> quiz de onboarding. O conteúdo só aparece nas telas após executar este passo. Rodar
+> novamente é seguro — o seed é idempotente.
+>
+> Para ligar a **geração ao vivo via Claude**, copie `server/.env.example` → `server/.env`
+> e preencha `CLAUDE_API_KEY` (opcional — sem a chave o app roda 100% com o banco embutido).
 
 ### Segredo de sessão (auth)
 Copie `server/.env.example` para `server/.env` e defina um `SESSION_SECRET` forte

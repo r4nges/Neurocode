@@ -24,6 +24,7 @@ function toPublicUser(u) {
     level: u.level,
     neuroPoints: u.neuroPoints,
     streak: u.streak,
+    onboardedAt: u.onboardedAt,
   };
 }
 
