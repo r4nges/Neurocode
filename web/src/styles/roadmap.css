@@ -62,22 +62,205 @@
 .lesson-list li { margin-bottom: 6px; }
 .lesson-cta { margin-top: 12px; }
 
-/* ===== Sessão de exercícios (Fase 4) ===== */
-.ex-session { margin-top: 24px; }
-.ex-progress { margin-bottom: 20px; }
-.ex-card { background: var(--c-card); border: 1px solid var(--c-border); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow-card); }
-.ex-prompt { font-size: 1.1rem; margin-bottom: 16px; }
-.ex-options { display: flex; flex-direction: column; gap: 10px; }
-.ex-option { text-align: left; padding: 12px 16px; border: 1px solid var(--c-border); border-radius: var(--radius); background: transparent; color: var(--c-text); cursor: pointer; }
-.ex-option.is-selected { border-color: var(--c-purple); background: rgba(124, 58, 237, 0.12); }
-.ex-input { width: 100%; padding: 12px 16px; border: 1px solid var(--c-border); border-radius: var(--radius); background: transparent; color: var(--c-text); font-family: inherit; }
-.ex-order { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.ex-order-line { display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--c-border); border-radius: var(--radius); padding: 8px 12px; }
-.ex-order-ctrls button { background: transparent; border: 1px solid var(--c-border); color: var(--c-text); border-radius: 6px; margin-left: 6px; cursor: pointer; padding: 2px 8px; }
-.ex-check { margin-top: 18px; }
-.ex-feedback { margin-top: 16px; padding: 14px 16px; border-radius: var(--radius); }
-.ex-feedback.is-ok { background: rgba(34, 197, 94, 0.14); border: 1px solid var(--c-green); }
-.ex-feedback.is-bad { background: rgba(239, 68, 68, 0.12); border: 1px solid #ef4444; }
-.ex-result { margin-top: 24px; display: flex; flex-direction: column; gap: 16px; align-items: flex-start; }
-.ex-pass { color: var(--c-green); font-size: 1.15rem; }
-.ex-fail { color: #f59e0b; font-size: 1.05rem; }
+/* ===== Sessão de exercícios (Fase 4 · estilizado) ===== */
+/* padding-bottom reserva espaço para a barra de feedback fixa não cobrir o card. */
+.ex-session { margin-top: 28px; display: grid; gap: 22px; padding-bottom: 96px; }
+
+.ex-progress-wrap { display: grid; gap: 10px; }
+.ex-progress-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  color: var(--c-text-muted); font-size: 0.9rem; font-weight: 500;
+}
+.ex-progress { height: 12px; }
+
+.ex-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: var(--shadow-card);
+  display: grid;
+  gap: 20px;
+}
+.ex-prompt { font-size: 1.2rem; font-weight: 600; line-height: 1.45; }
+
+.ex-options { display: grid; gap: 12px; }
+.ex-option {
+  display: flex; align-items: center; gap: 14px;
+  text-align: left;
+  padding: 16px 20px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--c-text);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.ex-option::before {
+  content: "";
+  width: 20px; height: 20px; flex-shrink: 0;
+  border-radius: 50%;
+  border: 2px solid var(--c-border);
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease);
+}
+.ex-option:hover:not(:disabled) { border-color: var(--c-purple); background: rgba(var(--rgb-purple), 0.1); transform: translateY(-1px); }
+.ex-option.is-selected { border-color: var(--c-purple); background: rgba(var(--rgb-purple), 0.16); }
+.ex-option.is-selected::before { border-color: var(--c-purple); background: radial-gradient(circle, #fff 32%, var(--c-purple) 34%); }
+.ex-option:disabled { cursor: default; }
+
+.ex-input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--c-text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.ex-input:focus {
+  outline: none; border-color: var(--c-purple);
+  background: rgba(var(--rgb-purple), 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--rgb-purple), 0.15);
+}
+
+.ex-order { list-style: none; padding: 0; display: grid; gap: 10px; }
+.ex-order-line {
+  display: flex; justify-content: space-between; align-items: center;
+  border: 1px solid var(--c-border); border-radius: var(--radius);
+  padding: 12px 16px; background: rgba(255, 255, 255, 0.03);
+}
+.ex-order-line code { font-family: var(--font-mono); color: #d6d3ff; }
+.ex-order-ctrls button {
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--c-border); color: var(--c-text);
+  border-radius: 8px; margin-left: 6px; cursor: pointer; padding: 4px 10px;
+  transition: border-color 0.15s, background 0.15s;
+}
+.ex-order-ctrls button:hover:not(:disabled) { border-color: var(--c-purple); background: rgba(var(--rgb-purple), 0.16); }
+.ex-order-ctrls button:disabled { opacity: 0.4; cursor: default; }
+
+.ex-check { justify-self: start; }
+
+/* Barra de feedback fixa no rodapé (estilo Duolingo) — botão "Continuar"
+   sempre visível, sem precisar rolar mesmo em cards altos. */
+.ex-feedback {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 40;
+  padding: 16px clamp(20px, 5vw, 40px);
+  border-top: 2px solid transparent;
+  background: var(--c-card-3);
+  box-shadow: 0 -14px 40px -22px rgba(0, 0, 0, 0.9);
+  animation: feedback-up 0.22s var(--ease);
+}
+@keyframes feedback-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+.ex-feedback-inner {
+  display: flex; align-items: center; gap: 14px;
+  width: 100%; max-width: var(--maxw); margin-inline: auto;
+}
+.ex-feedback p { font-weight: 600; margin: 0; }
+.ex-feedback-icon {
+  display: grid; place-items: center;
+  width: 30px; height: 30px; flex-shrink: 0;
+  border-radius: 50%; font-weight: 700; color: #061018;
+}
+.ex-feedback .btn { margin-left: auto; }
+.ex-feedback.is-ok { border-top-color: var(--c-green); }
+.ex-feedback.is-ok p { color: var(--c-green); }
+.ex-feedback.is-ok .ex-feedback-icon { background: var(--c-green); }
+.ex-feedback.is-bad { border-top-color: var(--c-red); }
+.ex-feedback.is-bad p { color: var(--c-red-soft); }
+.ex-feedback.is-bad .ex-feedback-icon { background: var(--c-red-soft); color: #fff; }
+
+/* ===== Resultado da aula (conclusão) ===== */
+.ex-result {
+  margin-top: 28px;
+  padding: clamp(28px, 4vw, 44px);
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 12px;
+}
+.ex-result-glyph {
+  position: relative;
+  display: grid; place-items: center;
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  font-size: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--c-border);
+  margin-bottom: 4px;
+}
+.ex-result-glyph--win {
+  background: rgba(0, 200, 150, 0.14);
+  border-color: rgba(0, 200, 150, 0.4);
+  box-shadow: 0 0 50px -10px rgba(0, 200, 150, 0.5);
+}
+
+/* --- Animação de conclusão (continuidade quiz -> tela concluída) --- */
+.ex-result--done .ex-result-glyph { animation: glyph-pop 0.55s var(--ease) both; }
+.ex-result-glyph--win::before,
+.ex-result-glyph--win::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--c-green);
+  animation: ring-burst 1.1s var(--ease) both;
+}
+.ex-result-glyph--win::after { animation-delay: 0.28s; }
+
+@keyframes glyph-pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  55% { transform: scale(1.14); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes ring-burst {
+  0% { transform: scale(0.7); opacity: 0.6; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* o resumo (score/recompensas/ações) entra depois da explosão -> continuidade */
+.ex-done-reveal {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(16px);
+}
+.ex-result.is-done .ex-done-reveal { animation: done-rise 0.55s var(--ease) 0.05s both; }
+@keyframes done-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+.ex-pass { color: var(--c-green); font-size: 1.6rem; }
+.ex-fail { color: var(--c-orange); font-size: 1.5rem; }
+.ex-result-sub { color: var(--c-text-muted); font-size: 1.05rem; }
+
+.ex-reward {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  width: 100%;
+  margin: 14px 0 8px;
+}
+.reward-tile {
+  display: grid; gap: 4px;
+  padding: 18px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--c-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+.reward-tile-val { font-weight: 800; font-size: 1.25rem; }
+.reward-tile-lbl { color: var(--c-text-muted); font-size: 0.82rem; }
+.reward-tile--up { border-color: rgba(var(--rgb-cyan), 0.4); background: rgba(var(--rgb-cyan), 0.1); }
+.reward-tile--badge { border-color: var(--c-border-soft); background: rgba(var(--rgb-purple), 0.12); }
+.reward-tile--badge .reward-tile-val { color: var(--c-purple-accent); }
+
+.ex-result-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 10px; }

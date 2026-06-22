@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="NeuroCode">
+  <defs>
+    <linearGradient id="ncBrand" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6C5CE7"/>
+      <stop offset="0.5" stop-color="#9B6BFF"/>
+      <stop offset="1" stop-color="#00CFFF"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#ncBrand)" stroke-linecap="round" stroke-linejoin="round">
+    <!-- brain silhouette -->
+    <path d="M32 10 C37 6 44 6 47 11 C53 9 58 14 55 20 C60 22 60 30 54 33
+             C59 37 56 45 49 44 C50 50 43 54 38 50 C35 53 29 53 26 50
+             C21 54 14 50 15 44 C8 45 5 37 10 33 C4 30 4 22 9 20
+             C6 14 11 9 17 11 C20 6 27 6 32 10 Z" stroke-width="2.4"/>
+    <!-- cortical folds -->
+    <path d="M20 18 C16 22 18 27 22 29" stroke-width="1.6" opacity="0.8"/>
+    <path d="M44 18 C48 22 46 27 42 29" stroke-width="1.6" opacity="0.8"/>
+    <path d="M17 36 C21 39 19 44 24 46" stroke-width="1.6" opacity="0.8"/>
+    <path d="M47 36 C43 39 45 44 40 46" stroke-width="1.6" opacity="0.8"/>
+    <!-- code symbol </> -->
+    <polyline points="28,26 24,30 28,34" stroke-width="2.6"/>
+    <line x1="34" y1="24.5" x2="30" y2="35.5" stroke-width="2.6"/>
+    <polyline points="36,26 40,30 36,34" stroke-width="2.6"/>
+  </g>
+</svg>

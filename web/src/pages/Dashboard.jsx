@@ -18,7 +18,7 @@ export default function Dashboard() {
   return (
     <>
       <Header />
-      <main className="container">
+      <main className="container dash-page">
         <h1>Olá, {user?.name}</h1>
         {error && <p className="rm-error">{error}</p>}
         {data?.weekly && (
@@ -36,26 +36,28 @@ export default function Dashboard() {
               <div className="progress"><span style={{ width: `${pct}%` }} /></div>
             </div>
 
-            {data.weekly.podium.length > 0 && (
-              <div className="dash-podium">
-                <h3>Pódio da semana</h3>
-                <ol>
-                  {data.weekly.podium.map((p, i) => (
-                    <li key={i}>{p.name} — {p.weeklyXp} XP</li>
-                  ))}
-                </ol>
-              </div>
-            )}
-
-            <div className="dash-badges">
-              <h3>Badges</h3>
-              {data.badges.length === 0
-                ? <p className="dash-empty">Conclua uma matéria para ganhar seu primeiro badge.</p>
-                : <ul className="badge-list">
-                    {data.badges.map((b) => (
-                      <li key={b.courseSlug} className="badge">{b.badgeName}</li>
+            <div className="dash-grid">
+              {data.weekly.podium.length > 0 && (
+                <div className="dash-podium">
+                  <h3>Pódio da semana</h3>
+                  <ol>
+                    {data.weekly.podium.map((p, i) => (
+                      <li key={i}>{p.name} — {p.weeklyXp} XP</li>
                     ))}
-                  </ul>}
+                  </ol>
+                </div>
+              )}
+
+              <div className="dash-badges">
+                <h3>Badges</h3>
+                {data.badges.length === 0
+                  ? <p className="dash-empty">Conclua uma matéria para ganhar seu primeiro badge.</p>
+                  : <ul className="badge-list">
+                      {data.badges.map((b) => (
+                        <li key={b.courseSlug} className="badge">{b.badgeName}</li>
+                      ))}
+                    </ul>}
+              </div>
             </div>
           </section>
         )}

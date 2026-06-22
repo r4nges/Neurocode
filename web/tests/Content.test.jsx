@@ -43,6 +43,22 @@ function mockApi() {
     });
     if (url.endsWith('/api/exercises/10/attempt')) return ok({ correct: true, solution: 1 });
     if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, courseCompleted: true, xpAwarded: 100, level: 2, leveledUp: true, streak: 1, badge: { badgeName: 'Estruturador', badgeIcon: 'FileCode' }, pointsAwarded: 100 });
+    if (url.endsWith('/api/lessons/3/session')) return ok({
+      ok: true, sessionToken: 'tok3', lessonTitle: 'Ordenação', courseSlug: 'html',
+      exercises: [
+        { id: 20, type: 'fill-blank', prompt: 'Complete a tag do corpo', options: [], difficulty: 1, conceptTag: 'tags' },
+        { id: 21, type: 'order-lines', prompt: 'Ordene a lista', options: ['</ul>', '<ul>', '<li>Item</li>'], difficulty: 3, conceptTag: 'tags' },
+      ],
+    });
+    if (url.endsWith('/api/exercises/20/attempt') || url.endsWith('/api/exercises/21/attempt')) return ok({ correct: true });
+    if (url.endsWith('/api/lessons/3')) return ok({ lesson: { id: 3, title: 'Ordenação', order: 3, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: ['tags'], content: [{ type: 'paragraph', text: 'teoria três' }] } });
+    if (url.endsWith('/api/lessons/4/session')) return ok({
+      ok: true, sessionToken: 'tok4', lessonTitle: 'Retentativa', courseSlug: 'html',
+      exercises: [{ id: 30, type: 'multiple-choice', prompt: 'Escolha a certa', options: ['errada', 'certa'], difficulty: 1, conceptTag: 'tags' }],
+    });
+    if (url.endsWith('/api/exercises/30/attempt')) return ok({ correct: JSON.parse(opts.body).answer === 1 });
+    if (url.endsWith('/api/lessons/4/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, xpAwarded: 0, streak: 1 });
+    if (url.endsWith('/api/lessons/4')) return ok({ lesson: { id: 4, title: 'Retentativa', order: 4, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: ['tags'], content: [{ type: 'paragraph', text: 'teoria quatro' }] } });
     if (url.endsWith('/api/lessons/2')) return ok({ lesson: { id: 2, title: 'Tags e estrutura', order: 2, courseSlug: 'html', courseTitle: 'HTML', status: 'available', nextLessonId: null, conceptTags: [], content: [{ type: 'paragraph', text: 'segunda aula carregada' }] } });
     if (url.endsWith('/api/lessons/1')) return ok({ lesson: lesson1 });
     return ok({});
@@ -85,5 +101,34 @@ describe('Tela de Aula — sessão de exercícios', () => {
         expect.objectContaining({ method: 'POST', headers: expect.objectContaining({ 'X-CSRF-Token': expect.any(String) }) })
       )
     );
+  });
+
+  it('order-lines renderiza as linhas mesmo após um fill-blank (regressão: estado do card não vaza)', async () => {
+    renderAt('/aula/3');
+    fireEvent.click(await screen.findByRole('button', { name: /começar exercícios/i }));
+    // 1º exercício: fill-blank (options: []) — responde e avança
+    fireEvent.change(await screen.findByPlaceholderText(/sua resposta/i), { target: { value: 'body' } });
+    fireEvent.click(screen.getByRole('button', { name: /verificar/i }));
+    fireEvent.click(await screen.findByRole('button', { name: /continuar/i }));
+    // 2º exercício: order-lines — as linhas a ordenar precisam aparecer (antes do fix, vinha vazio)
+    expect(await screen.findByText('<ul>')).toBeInTheDocument();
+    expect(await screen.findByText('<li>Item</li>')).toBeInTheDocument();
+  });
+
+  it('errar e avançar reseta o card e permite refazer (não trava)', async () => {
+    renderAt('/aula/4');
+    fireEvent.click(await screen.findByRole('button', { name: /começar exercícios/i }));
+    // erra de propósito
+    fireEvent.click(await screen.findByRole('button', { name: 'errada' }));
+    fireEvent.click(screen.getByRole('button', { name: /verificar/i }));
+    expect(await screen.findByText(/ainda não/i)).toBeInTheDocument();
+    // avança: o card precisa voltar limpo (alternativa errada não fica mais marcada)
+    fireEvent.click(screen.getByRole('button', { name: /continuar/i }));
+    const wrongAgain = await screen.findByRole('button', { name: 'errada' });
+    expect(wrongAgain.className).not.toMatch(/is-selected/);
+    // agora dá pra acertar
+    fireEvent.click(await screen.findByRole('button', { name: 'certa' }));
+    fireEvent.click(screen.getByRole('button', { name: /verificar/i }));
+    expect(await screen.findByText(/correto/i)).toBeInTheDocument();
   });
 });
