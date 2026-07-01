@@ -1,6 +1,15 @@
 // Maestria por conceito a partir das tentativas. Puro (sem I/O).
 const WINDOW = 5;
 const PROFICIENT = 0.8;
+const MIN_SAMPLE = 3; // amostra mínima para creditar "proficient" (anti cold-start, DT-02)
+
+// Classifica assimetricamente: difícil virar proficient (exige prova),
+// fácil virar weak (um erro já pede mais prática).
+function classify(count, accuracy) {
+  if (count === 0) return 'new';
+  if (accuracy < PROFICIENT) return 'weak';
+  return count >= MIN_SAMPLE ? 'proficient' : 'new';
+}
 
 // attempts: [{ conceptTag, correct, answeredAt }]
 export function computeMastery(attempts) {
@@ -16,8 +25,7 @@ export function computeMastery(attempts) {
     const count = list.length;
     const correct = list.filter((x) => x.correct).length;
     const accuracy = count ? correct / count : 0;
-    const level = count === 0 ? 'new' : accuracy >= PROFICIENT ? 'proficient' : 'weak';
-    mastery.set(concept, { level, accuracy, count });
+    mastery.set(concept, { level: classify(count, accuracy), accuracy, count });
   }
   return mastery;
 }
