@@ -62,6 +62,21 @@ describe('gradeAttempt — 1ª tentativa por token', () => {
     expect(count).toBe(1);
   });
 
+  it('devolve explanation e correctAnswer após responder', async () => {
+    const s = await buildLessonSession(userId, lesson1Id);
+    const exId = s.exercises[0].id;
+    const real = await prisma.exercise.findUnique({ where: { id: exId } });
+    const res = await gradeAttempt(userId, exId, s.sessionToken, JSON.parse(real.answer));
+    expect(res.correct).toBe(true);
+    expect(res).toHaveProperty('explanation');       // string ou null
+    expect(res.correctAnswer).toEqual(JSON.parse(real.answer));
+    // a montagem da sessão continua SEM expor o gabarito
+    for (const ex of s.exercises) {
+      expect(ex).not.toHaveProperty('explanation');
+      expect(ex).not.toHaveProperty('answer');
+    }
+  });
+
   it('devolve not-found para exercício inexistente', async () => {
     // Need a valid session token to pass the session check first
     const s = await buildLessonSession(userId, lesson1Id);

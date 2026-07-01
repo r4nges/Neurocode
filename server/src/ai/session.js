@@ -61,7 +61,7 @@ export async function gradeAttempt(userId, exerciseId, sessionToken, submitted) 
   } else if (!existing.correct && correct) {
     await prisma.attempt.update({ where: { id: existing.id }, data: { correct: true } });
   }
-  return { correct };
+  return { correct, explanation: exercise.explanation ?? null, correctAnswer: JSON.parse(exercise.answer) };
 }
 
 // Conclui a aula por limiar (>=80% de acerto). Denominador = exercícios emitidos na sessão.
