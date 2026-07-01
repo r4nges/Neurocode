@@ -50,6 +50,21 @@ describe('banco de exercícios — cobertura', () => {
     for (const c of concepts) expect(covered.has(c), `falta cobrir ${c}`).toBe(true);
   });
 
+  it('toda entrada de EXERCISES tem explanation não-vazia', () => {
+    for (const e of EXERCISES) {
+      expect(typeof e.explanation, `explanation de "${e.prompt}"`).toBe('string');
+      expect(e.explanation.trim().length, `explanation de "${e.prompt}"`).toBeGreaterThan(0);
+    }
+  });
+
+  it('todo exercício do banco no DB tem explanation persistida', async () => {
+    const rows = await prisma.exercise.findMany({ where: { source: 'bank' }, take: 200 });
+    for (const r of rows) {
+      expect(typeof r.explanation, `explanation do id ${r.id}`).toBe('string');
+      expect(r.explanation.trim().length).toBeGreaterThan(0);
+    }
+  });
+
   it('é idempotente: re-semear não duplica nem multiplica', async () => {
     const before = await prisma.exercise.count({ where: { source: 'bank' } });
     await seedExercises(prisma);
