@@ -98,6 +98,7 @@ model Exercise {
   answer     String
   difficulty Int
   conceptTag String
+  explanation String?
   source     String    @default("bank")
   createdAt  DateTime  @default(now())
   attempts   Attempt[]

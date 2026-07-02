@@ -1,0 +1,66 @@
+/* ==========================================================================
+   NeuroCode · Ajustes mobile (importado por último, sobrepõe os demais)
+   O grosso do layout já é fluido (clamp/auto-fit/flex-wrap); aqui tratamos
+   os pontos que quebram em telas estreitas: header, sessão de exercícios,
+   grades densas e alvos de toque.
+   ========================================================================== */
+
+/* -------- Tablets e phones grandes -------- */
+@media (max-width: 640px) {
+  /* Header: encolhe marca e ações para caber sem estourar */
+  .nav { gap: 12px; }
+  .nav-actions { gap: 8px; }
+  .nav-actions .btn-sm { padding: 10px 14px; font-size: 0.85rem; }
+
+  /* Páginas de conteúdo: menos respiro no topo */
+  .rm-page,
+  .course-page,
+  .lesson-page,
+  .dash-page,
+  .settings-page { padding-top: 22px; }
+
+  /* Sessão de exercícios */
+  .ex-prompt { font-size: 1.08rem; }
+  .ex-option { padding: 14px 16px; font-size: 0.98rem; }
+  .ex-session { padding-bottom: 150px; } /* barra de feedback pode ter 2-3 linhas */
+  .ex-feedback { padding: 12px 16px; }
+  .ex-feedback .btn { padding: 12px 20px; }
+
+  /* Menu do usuário: painel ocupa quase toda a largura */
+  .user-menu-panel { width: min(320px, calc(100vw - 20px)); }
+}
+
+/* -------- Phones -------- */
+@media (max-width: 560px) {
+  .brand { font-size: 1.05rem; gap: 8px; }
+  .brand-mark { width: 30px; height: 30px; }
+  .nav-actions { gap: 7px; }
+  .nav-actions .btn-sm { padding: 9px 12px; font-size: 0.8rem; }
+  .user-menu-name { max-width: 84px; }
+  .user-menu-trigger { padding: 5px 10px 5px 5px; }
+
+  /* Título das páginas não pode empurrar layout */
+  .dash-page > h1 { font-size: clamp(1.6rem, 7vw, 2rem); }
+
+  /* Grades densas viram 1 coluna cedo */
+  .rm-careers { grid-template-columns: 1fr; }
+
+  /* Ranking: posição + nome + xp continuam legíveis */
+  .rank-row { grid-template-columns: 2.2rem 1fr auto; padding: 12px 14px; gap: .5rem; }
+  .rank-xp { font-size: .82rem; }
+
+  /* Resultado da aula: recompensas empilham confortável */
+  .ex-reward { grid-template-columns: 1fr 1fr; }
+  .ex-result-actions .btn { flex: 1 1 auto; }
+
+  /* Barra de feedback: botão full-width na própria linha */
+  .ex-feedback-inner { gap: 10px; }
+  .ex-feedback .btn { margin-left: 0; width: 100%; order: 4; }
+  .ex-feedback p.ex-explanation { order: 3; }
+}
+
+/* -------- Phones muito estreitos -------- */
+@media (max-width: 380px) {
+  .brand span:last-child { display: none; } /* só o símbolo NeuroCode */
+  .ex-reward { grid-template-columns: 1fr; }
+}

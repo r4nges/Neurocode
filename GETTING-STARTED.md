@@ -37,6 +37,22 @@ npm run dev
 
 O Vite faz proxy de `/api` para a API, então o front fala com o back sem CORS.
 
+### Acessar pelo celular (mesma Wi-Fi + QR code)
+O Vite está configurado com `host: true`, então o app fica exposto na rede local.
+Com `npm run dev` rodando no PC, abra no celular (mesma Wi-Fi):
+
+```
+http://<IP-LOCAL-DO-PC>:5173
+```
+
+Descubra o IP do PC com `ipconfig` (Windows) — campo "Endereço IPv4" da Wi-Fi.
+O proxy `/api` funciona pelo celular também, então **todas as funcionalidades**
+(login, aulas, exercícios, gamificação) rodam normalmente. Um QR code apontando
+para essa URL abre o app direto no navegador do celular.
+
+> Se o celular não abrir: confirme que ambos estão na mesma rede e libere a porta
+> 5173 no firewall do Windows para o Node/Vite.
+
 - Auth: `POST /api/auth/register` · `POST /api/auth/login` · `POST /api/auth/logout` · `GET /api/auth/me` (sessão por cookie httpOnly; CSRF via header `X-CSRF-Token`).
 - Gamificação (**Fase 5**): concluir uma aula com **≥80%** de acerto concede **XP** (só o *delta* de melhora — refazer não farma), sobe de **nível** a cada 250 XP, alimenta o **streak** diário e, ao fechar a matéria inteira, libera um **badge** + **NeuroPoints**. Tudo calculado no servidor, numa transação, com o token da sessão invalidado após a conclusão. Leitura: `GET /api/dashboard` (painel "Seu progresso": XP/nível/streak/NeuroPoints + meta semanal + pódio + badges) e `GET /api/ranking` (leaderboard global por XP + sua posição). No app: painel no **Dashboard**, resumo de recompensa ao fim da aula e a página **/ranking**.
 

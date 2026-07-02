@@ -10,6 +10,7 @@ import './styles/animations.css';
 import './styles/landing.css';
 import './styles/auth.css';
 import './styles/roadmap.css';
+import './styles/mobile.css';
 
 const savedTheme = localStorage.getItem('neurocode-theme');
 if (savedTheme) document.documentElement.dataset.theme = savedTheme;

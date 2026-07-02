@@ -34,4 +34,25 @@ describe('computeMastery', () => {
     expect(m.get('dom').level).toBe('proficient'); // janela = 5 mais recentes (todas certas)
     expect(m.get('dom').count).toBe(5);
   });
+
+  it('cold-start: um único acerto NÃO vira proficient (fica new)', () => {
+    const m = computeMastery([a('flexbox', true)]);
+    expect(m.get('flexbox').level).toBe('new'); // count 1 < MIN_SAMPLE
+    expect(m.get('flexbox').count).toBe(1);
+  });
+
+  it('cold-start: 2 acertos (count < 3) ainda é new', () => {
+    const m = computeMastery([a('flexbox', true), a('flexbox', true)]);
+    expect(m.get('flexbox').level).toBe('new');
+  });
+
+  it('cold-start: 3 acertos (count = 3) já é proficient', () => {
+    const m = computeMastery([a('flexbox', true), a('flexbox', true), a('flexbox', true)]);
+    expect(m.get('flexbox').level).toBe('proficient');
+  });
+
+  it('weak é reativo: um único erro vira weak de imediato', () => {
+    const m = computeMastery([a('tags', false)]);
+    expect(m.get('tags').level).toBe('weak'); // accuracy 0 < 0.8, count 1
+  });
 });

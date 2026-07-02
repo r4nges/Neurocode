@@ -64,7 +64,7 @@
 
 /* ===== Sessão de exercícios (Fase 4 · estilizado) ===== */
 /* padding-bottom reserva espaço para a barra de feedback fixa não cobrir o card. */
-.ex-session { margin-top: 28px; display: grid; gap: 22px; padding-bottom: 96px; }
+.ex-session { margin-top: 28px; display: grid; gap: 22px; padding-bottom: 120px; }
 
 .ex-progress-wrap { display: grid; gap: 10px; }
 .ex-progress-meta {
@@ -160,10 +160,22 @@
   to { transform: translateY(0); }
 }
 .ex-feedback-inner {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
   width: 100%; max-width: var(--maxw); margin-inline: auto;
 }
 .ex-feedback p { font-weight: 600; margin: 0; }
+/* Botão fica na 1ª linha (à direita); a explicação ocupa a linha de baixo, neutra. */
+.ex-feedback .btn { order: 2; }
+.ex-feedback p.ex-explanation {
+  order: 3;
+  flex-basis: 100%;
+  width: 100%;
+  margin: 2px 0 0;
+  font-weight: 500;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--c-text-muted);
+}
 .ex-feedback-icon {
   display: grid; place-items: center;
   width: 30px; height: 30px; flex-shrink: 0;
