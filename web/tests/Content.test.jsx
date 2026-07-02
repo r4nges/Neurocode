@@ -41,7 +41,7 @@ function mockApi() {
       ok: true, sessionToken: 'tok', lessonTitle: 'O que é HTML', courseSlug: 'html',
       exercises: [{ id: 10, type: 'multiple-choice', prompt: 'Qual cria link?', options: ['<p>', '<a>'], difficulty: 1, conceptTag: 'tags' }],
     });
-    if (url.endsWith('/api/exercises/10/attempt')) return ok({ correct: true, solution: 1 });
+    if (url.endsWith('/api/exercises/10/attempt')) return ok({ correct: true, explanation: 'A tag <a> cria links (âncoras).', correctAnswer: 1 });
     if (url.endsWith('/api/lessons/1/complete')) return ok({ ok: true, completed: true, score: 100, nextLessonId: null, courseCompleted: true, xpAwarded: 100, level: 2, leveledUp: true, streak: 1, badge: { badgeName: 'Estruturador', badgeIcon: 'FileCode' }, pointsAwarded: 100 });
     if (url.endsWith('/api/lessons/3/session')) return ok({
       ok: true, sessionToken: 'tok3', lessonTitle: 'Ordenação', courseSlug: 'html',
@@ -88,6 +88,8 @@ describe('Tela de Aula — sessão de exercícios', () => {
     // escolhe a alternativa correta e verifica
     fireEvent.click(await screen.findByRole('button', { name: '<a>' }));
     fireEvent.click(await screen.findByRole('button', { name: /verificar/i }));
+    // a explicação do gabarito aparece no feedback
+    expect(await screen.findByText(/a tag <a> cria links/i)).toBeInTheDocument();
     // feedback de acerto e avançar -> conclui -> resultado de aprovação
     fireEvent.click(await screen.findByRole('button', { name: /continuar/i }));
     expect(await screen.findByText(/aula concluída/i)).toBeInTheDocument();

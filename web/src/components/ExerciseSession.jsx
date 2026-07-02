@@ -98,6 +98,7 @@ export default function ExerciseSession({ lessonId, onDone }) {
               <div className="ex-feedback-inner">
                 <span className="ex-feedback-icon" aria-hidden="true">{feedback.correct ? '✓' : '↻'}</span>
                 <p>{feedback.correct ? 'Correto!' : 'Ainda não. Vamos repetir esse mais tarde.'}</p>
+                {feedback.explanation && <p className="ex-explanation">{feedback.explanation}</p>}
                 <button className="btn btn-primary" onClick={next} autoFocus>Continuar</button>
               </div>
             </div>
