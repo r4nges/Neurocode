@@ -1,6 +1,7 @@
 import os from 'node:os';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { qrcode } from 'vite-plugin-qrcode';
 
 // IPs IPv4 reais da máquina (para liberar acesso via celular pelo IP da LAN).
 const lanHosts = Object.values(os.networkInterfaces())
@@ -9,7 +10,7 @@ const lanHosts = Object.values(os.networkInterfaces())
   .map((n) => n.address);
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), qrcode()],
   server: {
     port: 5173,
     host: true, // expõe na LAN (0.0.0.0) para acesso via celular / QR code

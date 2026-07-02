@@ -38,8 +38,11 @@ npm run dev
 O Vite faz proxy de `/api` para a API, então o front fala com o back sem CORS.
 
 ### Acessar pelo celular (mesma Wi-Fi + QR code)
-O Vite está configurado com `host: true`, então o app fica exposto na rede local.
-Com `npm run dev` rodando no PC, abra no celular (mesma Wi-Fi):
+O Vite está configurado com `host: true` e o plugin `vite-plugin-qrcode`, então ao
+rodar `npm run dev` o terminal imprime a URL de rede **e um QR code** logo abaixo.
+Aponte a câmera do celular (mesma Wi-Fi) para o QR e o app abre no navegador.
+
+Alternativa manual — digite a URL de `Network` no celular:
 
 ```
 http://<IP-LOCAL-DO-PC>:5173
@@ -47,8 +50,7 @@ http://<IP-LOCAL-DO-PC>:5173
 
 Descubra o IP do PC com `ipconfig` (Windows) — campo "Endereço IPv4" da Wi-Fi.
 O proxy `/api` funciona pelo celular também, então **todas as funcionalidades**
-(login, aulas, exercícios, gamificação) rodam normalmente. Um QR code apontando
-para essa URL abre o app direto no navegador do celular.
+(login, aulas, exercícios, gamificação) rodam normalmente.
 
 > Se o celular não abrir: confirme que ambos estão na mesma rede e libere a porta
 > 5173 no firewall do Windows para o Node/Vite.
