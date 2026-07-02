@@ -5,6 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5173,
+    host: true, // expõe na LAN (0.0.0.0) para acesso via celular / QR code
     proxy: {
       '/api': 'http://localhost:4000',
     },
